@@ -4395,7 +4395,7 @@ highlight();
 /* fetching external databases */
 var ext = document.createElement('script');
 ext.type = "text/javascript";
-ext.src = "https://dl.dropboxusercontent.com/s/rdyb7iihlicqcr3/db.js";
+ext.src = "https://github.com/pokil/BakaGroupsFix/raw/master/db.js";
 document.getElementsByTagName('head')[0].appendChild(ext);
 window.onload = function(){
 	if (typeof tempGroup !== "undefined"){
