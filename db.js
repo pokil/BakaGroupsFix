@@ -1,7 +1,6 @@
 var tempGroup = {
 	"1935":"http://verdelish.tumblr.com/",
 	"5960":"http://funnuraba.tumblr.com/",
-	"6087":"http://solitarytranslation.wordpress.com/",
 	"6105":"http://gto14dis.blogspot.com/",
 	"6107":"http://raspomme.tumblr.com/",
 	"6108":"http://animefangirl.com/",
