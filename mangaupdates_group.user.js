@@ -1,14 +1,8 @@
 // ==UserScript==
 // @name        Mangaupdates Groups Fix
-<<<<<<< HEAD
 // @namespace   https://github.com/pokil/BakaGroupsFix
 // @include     /http.*://www.mangaupdates.com/(releases|groups|series).*/
 // @version     1.3
-=======
-// @namespace   -
-// @include     /https?://www.mangaupdates.com/(releases|groups|series).*/
-// @version     1.1
->>>>>>> origin/master
 // @grant       none
 // @updateURL 	https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.meta.js
 // @downloadURL https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.user.js
@@ -1118,6 +1112,7 @@ var group = {
 	"1929":"http://community.livejournal.com/raspberry_scans/",
 	"1930":"http://forums.graalonline.com/",
 	"1932":"http://chikuwamanga.blogspot.com",
+	"1935":"http://verdelish.tumblr.com/",
 	"1938":"http://tanjou.rocktarts.com/",
 	"1941":"http://dorkyhobbit.livejournal.com/",
 	"1942":"http://www.geocities.com/houkousfury/",
@@ -1493,7 +1488,7 @@ var group = {
 	"2605":"http://aarinfantasy.com/forum/members/omasuyamata-97941.html",
 	"2607":"http://failmanga.wordpress.com",
 	"2609":"http://pewpewscans.wordpress.com/",
-	"2613":"http://www.stilettoheelsteam.com/",
+	"2613":"http://www.stilettoheelsteam.net/",
 	"2614":"http://mangahelpers.com/s/runte",
 	"2615":"http://manga.rayout.org/",
 	"2616":"http://starbomberman.livejournal.com/",
@@ -1855,7 +1850,7 @@ var group = {
 	"3128":"http://trinitybakuma.com/",
 	"3135":"http://mangahelpers.com/s/lone-scan",
 	"3137":"http://crowsxworst.com/forum/phpBB3/viewtopic.php?f=7&t=123",
-	"3138":"http://midnightmoon-scans.webs.com/",
+	"3138":"http://www.winter-translations.tumblr.com/",
 	"3139":"http://www.voodooscans.webs.com",
 	"3141":"http://mugematic.wordpress.com/",
 	"3143":"http://mangahelpers.com/s/teaparty",
@@ -3185,6 +3180,7 @@ var group = {
 	"5226":"http://prozessh.blogspot.de/",
 	"5227":"http://bunny26a3.blogspot.com/",
 	"5228":"http://smdc-translations.com/",
+	"5230":"http://www.facebook.com/SkyOfSnowScanlation",
 	"5231":"http://yorojin.tumblr.com/",
 	"5239":"http://bakeneko-scans.livejournal.com/",
 	"5248":"http://hereticlnt.blogspot.com/",
@@ -3297,7 +3293,7 @@ var group = {
 	"5527":"http://vyeen.tumblr.com/",
 	"5529":"http://www.dragonandgriffin.com",
 	"5531":"http://agrypniascan.blogspot.com/",
-	"5533":"http://mangaichiscans.blogspot.com/",
+	"5533":"http://mangaichiscans.mokkori.fr/",
 	"5534":"http://weiberregiment.livejournal.com/",
 	"5535":"http://flying-pages.livejournal.com/",
 	"5538":"http://dourkout.blogspot.com/",
@@ -3334,6 +3330,7 @@ var group = {
 	"5581":"http://hikaritoyamiscanlation.blogspot.com.au/",
 	"5582":"http://kamisamascans.wordpress.com",
 	"5583":"http://sakurahonyaku.wordpress.com/",
+	"5584":"http://flames.halofight.com/",
 	"5587":"http://www.shitbread.com",
 	"5588":"http://yurihou.se/",
 	"5590":"http://aotamago.blogspot.nl/",
@@ -3456,7 +3453,7 @@ var group = {
     "5815":"http://balikatanscans.uco.im/",
     "5816":"http://www.batoto.net/group/_/a/anonymous-r3177",
 	"5817":"http://www.batoto.net/group/_/p/penguinsinthebasement-r3524",
-    "5822":"http://v16translations.wordpress.com",
+    "5822":"http://v16.mokkori.fr/",
     "5823":"http://www.batoto.net/group/_/s/scan%E3%82%8A%E3%83%BCtions-r3857",
     "5824":"http://amadmanscans.blogspot.be/",
     "5825":"https://puddingheart.wordpress.com/",
@@ -3531,6 +3528,7 @@ var group = {
 	"5957":"http://bhhscans.com/",
 	"5958":"http://ihoshiku.tumblr.com/",
 	"5959":"http://shumiscans.blogspot.com/",
+	"5960":"http://funnuraba.tumblr.com/",
 	"5961":"http://dutschinat0r-scanlations.blogspot.com/",
 	"5962":"http://www.batoto.net/group/_/g/guest-21-r4157",
 	"5963":"http://blog.livedoor.jp/burninglovescans",
@@ -3554,7 +3552,6 @@ var group = {
 	"6004":"http://www.batoto.net/group/_/e/entente-r3838",
 	"6007":"http://www.batoto.net/group/_/a/ahfhvmvm-r4271",
 	"6008":"http://cafescans.tumblr.com/",
-<<<<<<< HEAD
 	"6011":"http://yuriinwonderland.wordpress.com/",
 	"6013":"http://visualnovel.deviantart.com/",
 	"6014":"http://finella.nemissa.info/",
@@ -3596,11 +3593,25 @@ var group = {
 	"6084":"http://www.world-three.org/",
 	"6085":"http://ostnt.wordpress.com/",
 	"6087":"http://solitarytranslation.wordpress.com/",
-	"6088":"http://comiplex.com/"
-=======
-	"6013":"http://visualnovel.deviantart.com/",
-	"6014":"http://finella.nemissa.info/"
->>>>>>> origin/master
+	"6088":"http://comiplex.com/",
+	"6101":"http://www.batoto.net/group/_/m/mangacurse%E6%94%B9-r4488",
+	"6105":"http://gto14dis.blogspot.com/",
+	"6107":"http://raspomme.tumblr.com/",
+	"6108":"http://animefangirl.com/",
+	"6113":"http://balmunkfezarion.deviantart.com/",
+	"6117":"http://soukascans.blogspot.ca/",
+	"6119":"http://flamenco-scanlations.tumblr.com/",
+	"6120":"http://tokkimori.weebly.com/",
+	"6122":"http://nyahafuckingha.tumblr.com/",
+	"6124":"http://www.batoto.net/group/_/s/sunrise-scans-r4470",
+	"6129":"http://anarzeescan.wordpress.com/",
+	"6130":"http://magatamaphantom.site11.com/",
+	"6132":"http://breadingbad.tumblr.com/",
+	"6135":"http://www.batoto.net/group/_/m/must-be-endless-scanlations-r4485",
+	"6139":"http://ojougakuenscans.tumblr.com/",
+	"6144":"http://www.batoto.net/group/_/i/irst-r4546",
+	"6146":"http://www.batoto.net/group/_/i/insomniacs-r4384",
+	"6150":"http://bleuchees.tumblr.com/"
 };
 
 var ircGroup = {
@@ -4550,19 +4561,11 @@ function insert() {
 			} else {
 				if(document.URL.indexOf('www.mangaupdates.com/series.html') >= 0){
 					var dt = document.getElementsByClassName('releasestitle');
-<<<<<<< HEAD
 					var ti = dt[0].textContent.replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
 				} else {
 					var ti = scanlators[i].parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.replace('[Add]','').replace('&','').replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
 				}
 				var sc = scanlators[i].innerHTML.replace('<u>','').replace('</u>','').replace(/&/g,'').replace(/"/g,'').trim();
-=======
-					var ti = dt[0].textContent.trim();
-				} else {
-					var ti = scanlators[i].parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.replace('[Add]','').trim();
-				}
-				var sc = scanlators[i].innerHTML.replace('<u>','').replace('</u>','').trim();
->>>>>>> origin/master
 				t = '<a href="https://www.google.com/search?q=' + sc + ' '+ ti + ' site:www.batoto.net/group/"><span style="color:red">(b)</span></a> ' +
 					'<a href="https://www.google.com/search?q=' + sc + '"><span style="color:red">(s)</span></a> ' +
 					'<a href="https://www.google.com/search?q=' + sc +' ' + ti +'"><span style="color:red">(ts)</span></a>';
@@ -4575,8 +4578,4 @@ function insert() {
 		
 		
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/master
