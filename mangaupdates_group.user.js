@@ -1,8 +1,14 @@
 // ==UserScript==
 // @name        Mangaupdates Groups Fix
+<<<<<<< HEAD
 // @namespace   https://github.com/pokil/BakaGroupsFix
 // @include     /http.*://www.mangaupdates.com/(releases|groups|series).*/
 // @version     1.3
+=======
+// @namespace   -
+// @include     /https?://www.mangaupdates.com/(releases|groups|series).*/
+// @version     1.1
+>>>>>>> origin/master
 // @grant       none
 // @updateURL 	https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.meta.js
 // @downloadURL https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.user.js
@@ -3548,6 +3554,7 @@ var group = {
 	"6004":"http://www.batoto.net/group/_/e/entente-r3838",
 	"6007":"http://www.batoto.net/group/_/a/ahfhvmvm-r4271",
 	"6008":"http://cafescans.tumblr.com/",
+<<<<<<< HEAD
 	"6011":"http://yuriinwonderland.wordpress.com/",
 	"6013":"http://visualnovel.deviantart.com/",
 	"6014":"http://finella.nemissa.info/",
@@ -3590,6 +3597,10 @@ var group = {
 	"6085":"http://ostnt.wordpress.com/",
 	"6087":"http://solitarytranslation.wordpress.com/",
 	"6088":"http://comiplex.com/"
+=======
+	"6013":"http://visualnovel.deviantart.com/",
+	"6014":"http://finella.nemissa.info/"
+>>>>>>> origin/master
 };
 
 var ircGroup = {
@@ -4539,11 +4550,19 @@ function insert() {
 			} else {
 				if(document.URL.indexOf('www.mangaupdates.com/series.html') >= 0){
 					var dt = document.getElementsByClassName('releasestitle');
+<<<<<<< HEAD
 					var ti = dt[0].textContent.replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
 				} else {
 					var ti = scanlators[i].parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.replace('[Add]','').replace('&','').replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
 				}
 				var sc = scanlators[i].innerHTML.replace('<u>','').replace('</u>','').replace(/&/g,'').replace(/"/g,'').trim();
+=======
+					var ti = dt[0].textContent.trim();
+				} else {
+					var ti = scanlators[i].parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.replace('[Add]','').trim();
+				}
+				var sc = scanlators[i].innerHTML.replace('<u>','').replace('</u>','').trim();
+>>>>>>> origin/master
 				t = '<a href="https://www.google.com/search?q=' + sc + ' '+ ti + ' site:www.batoto.net/group/"><span style="color:red">(b)</span></a> ' +
 					'<a href="https://www.google.com/search?q=' + sc + '"><span style="color:red">(s)</span></a> ' +
 					'<a href="https://www.google.com/search?q=' + sc +' ' + ti +'"><span style="color:red">(ts)</span></a>';
@@ -4556,4 +4575,8 @@ function insert() {
 		
 		
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
