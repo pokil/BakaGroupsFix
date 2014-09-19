@@ -2,7 +2,7 @@
 // @name        Mangaupdates Groups Fix
 // @namespace   https://github.com/pokil/BakaGroupsFix
 // @include     /http.*://www.mangaupdates.com/(releases|groups|series).*/
-// @version     1.3
+// @version     1.3.1
 // @grant       none
 // @updateURL 	https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.meta.js
 // @downloadURL https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.user.js
@@ -1727,7 +1727,7 @@ var group = {
 	"2944":"http://www.doujin-moe.us/main.html",
 	"2946":"http://kyousuimoon.wordpress.com",
 	"2947":"http://mangahelpers.com/s/mangascan",
-	"2948":"http://maigoscans.blogspot.ca/",
+	"2948":"http://maigo.us/",
 	"2950":"http://not4dawgz.blogspot.com/",
 	"2951":"http://kappascans.livejournal.com/",
 	"2953":"http://noscans.wordpress.com/",
@@ -2369,7 +2369,7 @@ var group = {
 	"3962":"http://hentaisanet.com",
 	"3963":"http://saviourscans.wordpress.com/",
 	"3970":"http://goalscanlation.blogspot.com/",
-	"3974":"http://sense-scans.com/",
+	"3974":"http://sensescans.com/",
 	"3980":"http://whisper.loyal-kiss.com/",
 	"3981":"http://linwenolatari.livejournal.com/",
 	"3983":"http://midnightsonatas.ucoz.com/",
@@ -3580,6 +3580,7 @@ var group = {
 	"6052":"http://akagamins.tumblr.com/",
 	"6055":"http://silentwolfie.deviantart.com/",
 	"6057":"http://mypacescans.wordpress.com/",
+	"6059":"http://hengao-scans.tk/",
 	"6062":"http://www.yudy-arzachel.blogspot.com/",
 	"6064":"http://zettaitranslation.blogspot.mx/",
 	"6066":"http://fixitinposttat.blogspot.ca/",
@@ -3608,10 +3609,25 @@ var group = {
 	"6130":"http://magatamaphantom.site11.com/",
 	"6132":"http://breadingbad.tumblr.com/",
 	"6135":"http://www.batoto.net/group/_/m/must-be-endless-scanlations-r4485",
+	"6134":"http://onetimescans.com/",
 	"6139":"http://ojougakuenscans.tumblr.com/",
 	"6144":"http://www.batoto.net/group/_/i/irst-r4546",
 	"6146":"http://www.batoto.net/group/_/i/insomniacs-r4384",
-	"6150":"http://bleuchees.tumblr.com/"
+	"6150":"http://bleuchees.tumblr.com/",	
+	"6156":"http://renaiscans.tumblr.com/",
+	"6160":"http://cannighoul.tumblr.com/",
+	"6161":"http://krytykal.org/",
+	"6164":"http://paperdollsproject.rocks/",
+	"6166":"http://yakushitemitta.tumblr.com/",
+	"6167":"http://shiroscanlations.wordpress.com/",
+	"6169":"http://setsuna86blog.wordpress.com/",
+	"6170":"http://www.dontknowmescans.tumblr.com/",
+	"6173":"http://www.batoto.net/group/_/h/hazue-ishin-r3590",
+	"6174":"http://bato.to/group/_/s/stormlight-r4615",
+	"6186":"http://tensaitranslations.wordpress.com/",
+	"6189":"http://jscans.altervista.org/",
+	"6192":"http://www.webtoonsreader.com/",
+	"6196":"https://www.facebook.com/FallenAngelsMATG"
 };
 
 var ircGroup = {
@@ -4566,7 +4582,7 @@ function insert() {
 					var ti = scanlators[i].parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.replace('[Add]','').replace('&','').replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
 				}
 				var sc = scanlators[i].innerHTML.replace('<u>','').replace('</u>','').replace(/&/g,'').replace(/"/g,'').trim();
-				t = '<a href="https://www.google.com/search?q=' + sc + ' '+ ti + ' site:www.batoto.net/group/"><span style="color:red">(b)</span></a> ' +
+				t = '<a href="https://www.google.com/search?q=' + sc + ' '+ ti + ' site:bato.to/group/"><span style="color:red">(b)</span></a> ' +
 					'<a href="https://www.google.com/search?q=' + sc + '"><span style="color:red">(s)</span></a> ' +
 					'<a href="https://www.google.com/search?q=' + sc +' ' + ti +'"><span style="color:red">(ts)</span></a>';
 			}
