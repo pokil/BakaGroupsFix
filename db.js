@@ -1,4 +1,4 @@
-var tempGroup = 
+var tempGroup = {
 	"5777":"https://www.facebook.com/Midnightdawnscans",
 	"6157":"http://finemang.comuf.com/",
 	"6198":"http://bato.to/group/_/t/tsuki-to-chikyuu-translations-r4673",
