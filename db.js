@@ -31,7 +31,10 @@ var tempGroup = {
 	"6322":"https://birdycephonaltera.wordpress.com/",
 	"6323":"https://defiring.wordpress.com/",
 	"6324":"http://wartdf.wordpress.com/",
-	"6327":"http://levelupsubs.blogspot.de/"
+	"6327":"http://levelupsubs.blogspot.de/",
+	"6328":"http://www.wuxiaworld.com/",
+	"6331":"http://variationa.tumblr.com/",
+	"6332":"http://www.mediafire.com/hidamarimanga"
 };
 
 var tempIRC = {
