@@ -1,6 +1,9 @@
 var tempGroup = {
+	"5217":"http://mangacow.co/",
 	"5759":"http://skythewood.blogspot.com/",
 	"5777":"https://www.facebook.com/Midnightdawnscans",
+	"6076":"http://www.webtoons.com/",
+	"6112":"http://nfp.is/",
 	"6157":"http://finemang.comuf.com/",
 	"6194":"http://argovia2012.wix.com/lastgame",
 	"6198":"http://bato.to/group/_/t/tsuki-to-chikyuu-translations-r4673",
@@ -34,7 +37,10 @@ var tempGroup = {
 	"6327":"http://levelupsubs.blogspot.de/",
 	"6328":"http://www.wuxiaworld.com/",
 	"6331":"http://variationa.tumblr.com/",
-	"6332":"http://www.mediafire.com/hidamarimanga"
+	"6332":"http://www.mediafire.com/hidamarimanga",
+	"6337":"http://spaminsubs.wordpress.com/",
+	"6338":"http://mangadolls.wordpress.com/",
+	"6339":"https://eihscans.wordpress.com/"
 };
 
 var tempIRC = {
