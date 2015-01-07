@@ -8,13 +8,129 @@
 // @downloadURL https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.user.js
 // ==/UserScript==
 
-
 var groupID = document.URL.replace(/^.+id=/,'');
+
+highlight();
+
+/* fetching external databases */
+var ext = document.createElement('script');
+ext.type = "text/javascript";
+ext.src = "https://github.com/pokil/BakaGroupsFix/raw/master/db.js";
+document.getElementsByTagName('head')[0].appendChild(ext);
+
+window.onload = function() {
+	if (typeof tempGroup !== "undefined") {
+		for (gid in tempGroup) {
+			group[gid]=tempGroup[gid];
+		}
+		for (gid in tempIRC) {
+			ircGroup[gid]=tempIRC[gid];
+		}
+	}
+	insert();
+}
+
+/* highlight reading list */
+function highlight() {
+var pad = document.getElementsByClassName('pad'); 
+	var padLen = pad.length;
+	var color1 = '#CCFFFF';
+	var color2 = '#AAFFFF';
+	var color;
+	var prev = false;
+	for (var i = 0; i < padLen; i++) {
+		var readImg = pad[i].getElementsByTagName('img');
+		var parent=pad[i].parentNode.children;
+		
+		for (var k = 0; k < parent.length; k++) {
+			if (prev) {
+				parent[k].style.border = 'solid #777777'; 
+				parent[k].style.borderWidth = '1px 0px 0px 0px';  
+			}
+			if (readImg.length > 0) {
+			
+				if (pad[i].bgColor === '#F0F3F7') {
+					color = color1;
+				} else {
+					color = color2;
+				}
+				if (readImg[0].src.indexOf('images/listicons/type0.gif') >= 0) {
+					parent[k].style.backgroundColor = color; 
+					parent[k].style.border = 'solid #777777'; 
+					parent[k].style.borderWidth = '1px 0px 0px 0px';  
+				}
+			}
+		}
+		if (readImg.length > 0) {
+			if (readImg[0].src.indexOf('images/listicons/type0.gif') >= 0) {
+				prev=true;
+			} else {
+				prev=false;
+			}
+		} else {
+			prev=false;
+		}
+	}
+}
+function insert() {
+	var groupSite = '';
+	if (group[groupID]) {
+		groupSite = group[groupID];
+	}
+
+	if (document.URL.indexOf('www.mangaupdates.com/groups.html') >= 0) {
+		var list = document.getElementsByClassName('text');
+		var listLen = list.length;
+		var irc = '';
+		var site = document.createElement('tr');
+		site.innerHTML = '<td class="text"><u>Site</u></td><td class="text"><a target="_blank" alt="" href="' + groupSite + '"><u>' + groupSite + '</u></a></td>';
+		for (var i = 0; i < listLen; i++) {
+			if (list[i].innerHTML === '<u>IRC</u>') {
+				if ((irc=list[i].nextSibling.innerHTML) !== '<i>No IRC</i>') {
+					var a = irc.replace(/^.+@/,'');
+					var b = irc.replace('#','').replace(/@.*/,'');
+					list[i].nextSibling.innerHTML = '<a href="irc://' + a + '/' + b + '"><u>' + a + '/' + b + '</u></a>';
+				}
+				if (groupSite !== '') {
+					list[i].parentNode.parentNode.insertBefore(site, list[i].parentNode.nextSibling);
+				}
+			}
+		}
+	} else {
+		var scanlators = document.querySelectorAll('[title="Group Info"]');// $('a[title="Group Info"]').get();
+		var scanLen = scanlators.length;
+		for (var i = 0; i < scanLen; i++) {
+			var sid = scanlators[i].href.replace(/^.+id=/,'');
+			var website = group[sid];
+			var t = '';
+			var t2 = '';
+			if (group[sid]) {
+				t = '<a href="' + website + '" title="' + website + '"><span style="color:blue">[site]</span></a>';
+			} else {
+				if (document.URL.indexOf('www.mangaupdates.com/series.html') >= 0) {
+					var dt = document.getElementsByClassName('releasestitle');
+					var ti = dt[0].textContent.replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
+				} else {
+					var ti = scanlators[i].parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.replace('[Add]','').replace('&','').replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
+				}
+				var sc = scanlators[i].innerHTML.replace('<u>','').replace('</u>','').replace(/&/g,'').replace(/"/g,'').trim();
+				t = '<a href="https://www.google.com/search?q=' + sc + ' '+ ti + ' site:bato.to/group/"><span style="color:red">(b)</span></a> ' +
+					'<a href="https://www.google.com/search?q=' + sc + '"><span style="color:red">(s)</span></a> ' +
+					'<a href="https://www.google.com/search?q=' + sc +' ' + ti +'"><span style="color:red">(ts)</span></a>';
+			}
+			if (ircGroup[sid]) {
+				t2 = '<a href="irc://' + ircGroup[sid] + '" title="' + ircGroup[sid] + '"><span style="color:purple">[irc]</span></a>';
+			}
+			scanlators[i].outerHTML += ' '+ t + ' ' + t2;  
+		}
+	}
+}
+
 var group = {
 	"16":"http://manga-fiends.cjb.net",
 	"17":"http://www.mangareaders.com",
 	"18":"http://tjo.one-liners.net/index.php",
-	"21":"http://amaru7.net/",
+	"21":"http://amaru007.net/",
 	"25":"http://www.yanime.com",
 	"26":"http://www.sazanquest.com",
 	"29":"http://peccatore.umi-sora.com/",
@@ -224,8 +340,8 @@ var group = {
 	"333":"http://www.livejournal.com/users/tontetsu/",
 	"334":"http://fushichou.hayasu.com/",
 	"336":"http://www.nojay.org",
-	"338":"http://hiyokonogao.wordpress.com/",
 	"337":"http://itsanendlessworld.godzijdank.nl/",
+	"338":"http://hiyokonogao.wordpress.com/",
 	"340":"http://scpocky.romantic-rhapsody.com/",
 	"341":"http://www.captaintsubasa.org/",
 	"342":"http://groups.yahoo.com/group/momoiro_sabbath/",
@@ -336,6 +452,7 @@ var group = {
 	"543":"http://snowy.gunmage.net/",
 	"546":"http://chikansneverdie.wordpress.com/",
 	"547":"http://narutotrad.com/",
+	"549":"http://www.nagare-boshi.net/",
 	"550":"http://gomasuri.cjb.net/",
 	"552":"http://llt2005.proboards80.com",
 	"554":"http://mrdummy.net/dummysub/",
@@ -644,9 +761,10 @@ var group = {
 	"1049":"http://www.asian-jesus.com/",
 	"1051":"http://rainingmangas.awardspace.com/",
 	"1052":"http://www.geocities.com/futari_ecchi_scanlations/",
+	"1054":"http://loversdreams.wordpress.com",
 	"1058":"http://lostheaven-sc.livejournal.com/",
 	"1062":"http://goldie.livejournal.com/",
-	"1065":"http://conan.thetrogdor.com/",
+	"1065":"http://www.dctp.ws/",
 	"1068":"http://www.completely-oblivious.net",
 	"1070":"http://community.livejournal.com/hp_scanlation/",
 	"1072":"http://community.livejournal.com/yazaworld/",
@@ -695,7 +813,7 @@ var group = {
 	"1174":"http://bakemono.info/",
 	"1176":"http://whatever-project.com/",
 	"1177":"http://liliy.net/daradara",
-	"1178":"http://dustballs.hosterbox.net/",
+	"1178":"http://dustballs.nutang.com/",
 	"1179":"http://mangaabyss.webs.com/",
 	"1180":"http://www.freewebs.com/mmmdraco",
 	"1181":"http://www.naruto-mx.com/us",
@@ -713,7 +831,7 @@ var group = {
 	"1200":"http://jelations.wordpress.com/",
 	"1201":"http://konnichiwa.teake.net/",
 	"1202":"http://azure.freehostia.com/",
-	"1204":"http://offtopia.11.forumer.com/",
+	"1204":"http://www.jcafe24.net/index.php?board=106.0",
 	"1205":"http://community.livejournal.com/todokanai_gw/",
 	"1207":"http://dakkumanga.bravehost.com/",
 	"1211":"http://www.divine-sanctuary.net/",
@@ -737,7 +855,7 @@ var group = {
 	"1260":"http://www.tonigobe.net/",
 	"1261":"http://sosexyscans.com/",
 	"1263":"http://zawazawamanga.wordpress.com/",
-	"1264":"http://www.sahadou.com/",
+	"1264":"http://sahadou.com/",
 	"1265":"http://www.sorascans.com",
 	"1266":"http://www.spazzythegreat.com/mbg.html",
 	"1267":"http://ahk.adgbc.com/",
@@ -790,6 +908,7 @@ var group = {
 	"1347":"http://darkichiruki.livejournal.com/",
 	"1348":"http://www.ninjabuzz.com/",
 	"1354":"http://community.livejournal.com/hitman_reborn",
+	"1355":"http://z11.invisionfree.com/We_Are_Fairy_Tail/index.php",
 	"1356":"http://bunpitsu.wordpress.com/",
 	"1359":"http://mangahelpers.com/s/fayte",
 	"1360":"http://pawprints.reverein.net/",
@@ -865,6 +984,7 @@ var group = {
 	"1485":"http://celeasdiele.livejournal.com/",
 	"1487":"http://groups.yahoo.com/group/delirium_scans/",
 	"1488":"http://www.operation-boredom.com/",
+	"1489":"https://kfctranslations.wordpress.com/",
 	"1490":"http://rabbitrepublic.wordpress.com/",
 	"1493":"http://hyde.nyaatorrents.org/",
 	"1496":"http://community.livejournal.com/hiiro_reiichi/",
@@ -873,6 +993,7 @@ var group = {
 	"1500":"http://suishou-tenshi.livejournal.com/",
 	"1501":"http://firestorm717.livejournal.com/",
 	"1502":"http://lucathia-rykatu.livejournal.com/",
+	"1503":"http://www.akuma-corp.de/",
 	"1507":"http://karala.livejournal.com/",
 	"1511":"http://unexpected-fate.livejournal.com/",
 	"1514":"http://utm.yaoi-island.com/",
@@ -1111,6 +1232,7 @@ var group = {
 	"1928":"http://community.livejournal.com/hokutaku",
 	"1929":"http://community.livejournal.com/raspberry_scans/",
 	"1930":"http://forums.graalonline.com/",
+	"1931":"http://twilightdreamsscans.darkbb.com/",
 	"1932":"http://chikuwamanga.blogspot.com",
 	"1935":"http://verdelish.tumblr.com/",
 	"1938":"http://tanjou.rocktarts.com/",
@@ -1218,13 +1340,14 @@ var group = {
 	"2126":"http://galsscanlations.wordpress.com",
 	"2128":"http://curescans.livejournal.com/",
 	"2129":"http://flowermemory.livejournal.com/",
+	"2130":"http://fateful-encounters.tainted-reverie.net/",
 	"2132":"http://kawaii-shoujo.net/suzuran/wordpress/",
 	"2133":"http://takejiro.blogspot.com/",
 	"2134":"http://blank.zenaku.net/",
 	"2136":"http://www.psychopandas.com",
 	"2139":"http://www.hajike.eu.tp/",
 	"2144":"http://takariscans.zoushea.com",
-	"2145":"http://www.instantz.net/",
+	"2145":"http://inpowerz.com/forums/forumdisplay.php?48-INP-Mangaz",
 	"2146":"http://nayukilove.wordpress.com/",
 	"2147":"http://fireicescans.webs.com/",
 	"2149":"http://perplexic.livejournal.com/",
@@ -1373,7 +1496,7 @@ var group = {
 	"2424":"http://www.windfall.novastartech.com/",
 	"2425":"http://hikigeki.wordpress.com/",
 	"2426":"http://despair.meidokon.net/",
-	"2427":"http://www.deathtollscans.net/",
+	"2427":"http://beta.deathtollscans.net/Forum/",
 	"2428":"http://sandwhale1986.wordpress.com/",
 	"2431":"http://community.livejournal.com/for_gem_box",
 	"2433":"http://community.livejournal.com/inconnu_scans",
@@ -1407,7 +1530,7 @@ var group = {
 	"2479":"http://smemories.koi-enishi.net/",
 	"2481":"http://codascans.wordpress.com/",
 	"2482":"http://kira-kira-boshi.webs.com/",
-	"2484":"http://hotcakes-scans.com/",
+	"2484":"http://www.hotcakes.cc.nf/",
 	"2485":"http://fatedcircle.wordpress.com/",
 	"2487":"http://twobig.blogspot.com/",
 	"2489":"http://mangahelpers.com/s/phayd2dark-scans",
@@ -1545,7 +1668,7 @@ var group = {
 	"2686":"http://zawa2.blogspot.com/",
 	"2687":"http://nowloading.byethost7.com/",
 	"2690":"http://d-moonchild.livejournal.com/",
-	"2691":"http://biribiri.eu/",
+	"2691":"http://biribiri.fakku.net/",
 	"2692":"http://sakurasckns.wordpress.com/",
 	"2694":"http://community.livejournal.com/shinobi_life/",
 	"2695":"http://zettashucks.livejournal.com/980.html?style=mine#cutid1",
@@ -1655,7 +1778,7 @@ var group = {
 	"2831":"http://wolflantern.livejournal.com/",
 	"2838":"http://nigihana.com/",
 	"2839":"http://mangahelpers.com/s/prowider",
-	"2840":"http://mangahelpers.com/s/kibate",
+	"2840":"http://vaasitranslation.blogspot.com/",
 	"2841":"http://lolly-popps.livejournal.com/",
 	"2842":"http://impatientmanga.wordpress.com/",
 	"2843":"http://vaane.wordpress.com/",
@@ -1663,7 +1786,7 @@ var group = {
 	"2846":"http://community.livejournal.com/asakuralove/",
 	"2847":"http://eikouscans.wordpress.com/",
 	"2849":"http://mangahelpers.com/s/matsuda",
-	"2850":"http://offtopia.eberth.de/",
+	"2850":"http://offtopia.11.forumer.com/",
 	"2851":"http://somedaysoon.co.cc/",
 	"2852":"http://community.livejournal.com/tsuderascans/",
 	"2854":"http://mangahelpers.com/s/manga-release",
@@ -1671,11 +1794,11 @@ var group = {
 	"2856":"http://lunascans.vox.com",
 	"2858":"http://mangahelpers.com/s/iyddiww",
 	"2859":"http://community.livejournal.com/t3rribletrio/",
-	"2860":"http://mangahelpers.com/s/sleepinboi",
+	"2860":"http://teamkoinaka.wordpress.com/",
 	"2862":"http://kurichanweb.wordpress.com/",
 	"2863":"http://anonymousdelivers.blogspot.com/",
 	"2864":"http://mangahelpers.com/s/styxian",
-	"2866":"http://mangahelpers.com/s/arrivederci-scans/",
+	"2866":"http://yags-fansub.blogspot.com/",
 	"2868":"http://mangahelpers.com/s/mastex-scans/details/33419",
 	"2869":"http://stier421.livejournal.com/",
 	"2870":"http://mangahelpers.com/s/freakyfreak",
@@ -1701,7 +1824,7 @@ var group = {
 	"2902":"http://community.livejournal.com/goldstarscans/",
 	"2904":"http://sscans.livejournal.com",
 	"2905":"http://community.livejournal.com/boysxboys/",
-	"2909":"http://omaris-sister.blogspot.com/",
+	"2909":"http://crimson-flower.blogspot.com/",
 	"2910":"http://projectenis.blogspot.com/",
 	"2912":"http://freewebs.com/mywishing-star",
 	"2913":"http://animelabscan.blogspot.com/",
@@ -1716,7 +1839,7 @@ var group = {
 	"2926":"http://mangahelpers.com/s/peebs",
 	"2927":"http://genshisairairesurrection.wordpress.com/",
 	"2929":"http://community.livejournal.com/buusagi_gumi/",
-	"2930":"http://amazuki.endless-days.org/",
+	"2930":"https://blastcomicscans.wordpress.com/",
 	"2931":"http://www.ipitydafoo.com/",
 	"2933":"http://niisamatredits.wordpress.com/",
 	"2934":"http://illacrimoimber.wordpress.com/",
@@ -1748,22 +1871,22 @@ var group = {
 	"2976":"http://tarahbeescans.wordpress.com/",
 	"2977":"http://gotmilkmotherfucker.blogspot.com",
 	"2978":"http://mysanctuaryscans.blogspot.com",
-	"2979":"http://mangahelpers.com/s/mr-ark",
+	"2979":"http://blackfoxscans.mzzhost.com/index.html",
 	"2981":"http://milky-translation.blogspot.com/",
 	"2982":"http://mangahelpers.com/s/laughing-scans",
 	"2983":"http://TsundereTranslations.Blogspot.com",
-	"2984":"http://mangahelpers.com/s/celest",
+	"2984":"http://thelostlight.funeralofsmiles.com/",
 	"2985":"http://alexzoe.deviantart.com/",
-	"2987":"http://mangahelpers.com/s/gonedown",
+	"2987":"http://studiofennec.wordpress.com/fennec-scans/",
 	"2988":"http://raizoo.wordpress.com/",
 	"2989":"http://gohyper.wordpress.com/",
 	"2990":"http://gunpowderscans-subs.blogspot.com/",
 	"2991":"http://community.livejournal.com/distaff_side",
-	"2994":"http://mangahelpers.com/s/kamina-sama",
+	"2994":"http://snowraven-scans.blogspot.com/",
 	"2995":"http://wunzyscans.blogspot.com/",
 	"2996":"http://mangahelpers.com/s/liberty-scantrad-team",
 	"2997":"http://yaoipower.wordpress.com/",
-	"2999":"http://mangahelpers.com/s/winnkeyindependentproduction",
+	"2999":"http://coffeetranslation.com/",
 	"3000":"http://argentique.livejournal.com/",
 	"3001":"http://kissthellama.blogspot.com",
 	"3002":"http://keishou.net/",
@@ -1771,11 +1894,11 @@ var group = {
 	"3005":"http://mangahelpers.com/s/rd-project",
 	"3006":"http://chibimanga.info/",
 	"3008":"http://medakatp.wordpress.com",
-	"3011":"http://mangahelpers.com/s/bloody-tears-scans",
-	"3013":"http://mangahelpers.com/s/mangastation",
+	"3011":"http://chinjufu.tk/",
+	"3013":"http://maiden-lane-translations.tumblr.com/",
 	"3014":"http://www.colonydrop.com/",
 	"3015":"http://www.nanofate.us/",
-	"3019":"http://mangahelpers.com/s/keisolusubs",
+	"3019":"http://cafeconlenin.com/",
 	"3020":"http://cookiedough.pinkmimi.net",
 	"3021":"http://kisascans.wordpress.com/",
 	"3022":"http://bitter-sweet.net/malnourished/",
@@ -1783,10 +1906,10 @@ var group = {
 	"3028":"http://zoku88.blogsome.com/",
 	"3030":"http://kureyonalliance.net/",
 	"3034":"http://thrashin1988thrashin.blogspot.com/",
-	"3036":"http://mangahelpers.com/s/organization-xiii",
+	"3036":"http://tokkyuuressha.tumblr.com/",
 	"3038":"http://team-takku.blogspot.com/",
 	"3039":"http://loofnuk.com/",
-	"3040":"http://mangahelpers.com/s/magicalbum",
+	"3040":"http://freewheeling-x-scans.tumblr.com/",
 	"3041":"http://orionwave.blog.com/",
 	"3042":"http://mangahelpers.com/s/serious-business",
 	"3043":"http://purulelu.org/wspi/",
@@ -1795,7 +1918,7 @@ var group = {
 	"3046":"http://www.scansremix.com/",
 	"3050":"http://migawari.livejournal.com/",
 	"3052":"http://sucre-rose.livejournal.com/",
-	"3053":"http://prankster.vndv.com/",
+	"3053":"http://scribbles.moe/",
 	"3054":"http://doujinayane.blogspot.com/",
 	"3055":"http://kaidaten.wordpress.com/",
 	"3056":"http://mangahelpers.com/s/donscans",
@@ -1808,9 +1931,9 @@ var group = {
 	"3065":"http://www.momichi.net/kindaichi",
 	"3066":"http://distro.jjhosting.org/tashi/",
 	"3067":"http://s1.webstarts.com/faithscan/",
-	"3068":"http://mangahelpers.com/s/anaoj",
+	"3068":"http://noitl.blogspot.com/",
 	"3070":"http://shinigamiaura.livejournal.com/",
-	"3071":"http://www.colormehappy.co.cc/",
+	"3071":"http://stcon.wordpress.com/",
 	"3072":"http://rehwynscans.blogspot.com/",
 	"3076":"http://mangahelpers.com/s/-compartilhando-",
 	"3078":"http://sunsetchaps.wordpress.com/",
@@ -1819,10 +1942,10 @@ var group = {
 	"3083":"http://zefiberyl.blogspot.com/",
 	"3087":"http://community.livejournal.com/karisomeotome/",
 	"3089":"http://community.livejournal.com/sakanadesuscans/",
-	"3091":"http://mangahelpers.com/s/mscans",
-	"3092":"http://mangahelpers.com/s/evvl-scans",
+	"3091":"https://kamitranslation.wordpress.com/",
+	"3092":"http://mastersca.nz/",
 	"3094":"http://mibscanlations.blogspot.com/",
-	"3095":"http://mangahelpers.com/s/bo-bobo-fan-project",
+	"3095":"https://hatoken.wordpress.com/",
 	"3096":"http://seraphscans.blogspot.com/",
 	"3097":"http://dragonnest.ulmb.com/",
 	"3098":"http://rootkitten.livejournal.com/",
@@ -1836,7 +1959,7 @@ var group = {
 	"3109":"http://www.izirae.blogspot.com/",
 	"3110":"http://mangahelpers.com/s/katana",
 	"3111":"http://loveloveshigeyoshi.blogspot.com/",
-	"3112":"http://mangahelpers.com/s/ayawasgi",
+	"3112":"http://shatteredscans.wordpress.com/",
 	"3114":"http://manga.minorchaos.net",
 	"3115":"http://community.livejournal.com/ebil_trio/",
 	"3116":"http://onescans.wordpress.com/",
@@ -1853,7 +1976,7 @@ var group = {
 	"3138":"http://www.winter-translations.tumblr.com/",
 	"3139":"http://www.voodooscans.webs.com",
 	"3141":"http://mugematic.wordpress.com/",
-	"3143":"http://mangahelpers.com/s/teaparty",
+	"3143":"http://lazyfag.wordpress.com/",
 	"3144":"http://zssscans.wordpress.com/",
 	"3145":"http://lhytiss.blogspot.com/",
 	"3146":"http://mangahelpers.com/s/momoiro-scans",
@@ -2228,13 +2351,13 @@ var group = {
 	"3731":"http://community.livejournal.com/sg_scanlations",
 	"3733":"http://dangoscans.wordpress.com/",
 	"3734":"http://www.yurikai.com",
-	"3735":"http://kyonichi.blogspot.com/",
+	"3735":"http://14biq.wordpress.com/",
 	"3737":"http://idlescans.blogspot.com/",
 	"3740":"http://shibababa.wordpress.com/",
 	"3742":"http://taste-and-eat.livejournal.com/",
 	"3743":"http://heartstation.org/",
 	"3744":"http://franky-family.freeforums.eu/portal.htm",
-	"3746":"http://www.batoto.net/group/_/n/nirpan-r574",
+	"3746":"http://www.mediafire.com/oniichan6andup",
 	"3747":"http://m-27.com",
 	"3748":"http://hoshitori.com/",
 	"3752":"http://evilnobara.livejournal.com/",
@@ -2294,7 +2417,7 @@ var group = {
 	"3833":"http://riceballicious.info/",
 	"3834":"http://kawaii.ca/",
 	"3838":"http://www.blue-spire.net/",
-	"3840":"http://www.facepalmscans.com/",
+	"3840":"http://www.facepalm.moe/",
 	"3841":"http://kimoiscans.livejournal.com",
 	"3844":"http://twin-dragons-no-fansub.blogspot.com/",
 	"3845":"http://community.livejournal.com/dgrayman_yaoi/",
@@ -2304,7 +2427,7 @@ var group = {
 	"3850":"http://community.livejournal.com/doumekiwatanuki/",
 	"3851":"http://tiuscan.wordpress.com/",
 	"3852":"http://cyberakuma.livejournal.com/",
-	"3853":"http://gteam.fakku.net/",
+	"3853":"http://phoenixsyndicate.fakku.net/",
 	"3854":"http://gao-subs.com/",
 	"3856":"http://anotsuu.livejournal.com/",
 	"3857":"http://maplescans.ucoz.com",
@@ -2312,6 +2435,7 @@ var group = {
 	"3859":"http://pokespeproject.blogspot.com/",
 	"3861":"http://nfnet.wordpress.com",
 	"3864":"http://mlsculptor.blogspot.com/",
+	"3865":"http://xscansx.forummotion.com/",
 	"3866":"http://mmsscans.wordpress.com/",
 	"3868":"http://evetaku.com/blog/",
 	"3871":"http://www.mediafire.com/chapterone",
@@ -2328,7 +2452,7 @@ var group = {
 	"3894":"http://photonlab.blogspot.com/",
 	"3896":"http://shoujo-addiction.jimdo.com/",
 	"3898":"http://www.mediafire.com/?9tknjryf8rjx4",
-	"3899":"http://kokuhaku.ephemeraleternity.com/",
+	"3899":"http://kokuhaku.eternicity.net/",
 	"3900":"http://mypersonalscan.blogspot.com/",
 	"3901":"http://forteatrox.afterglow.nu/",
 	"3902":"http://vividtrans.wordpress.com/",
@@ -2336,7 +2460,7 @@ var group = {
 	"3904":"http://ngihytna.wordpress.com/",
 	"3905":"http://immortalabyss.com/",
 	"3907":"http://imn.ucoz.com/",
-	"3909":"http://scans.kouhi.me/",
+	"3909":"http://blog.kouhi.me/",
 	"3911":"http://queensbladebattle.blogspot.com/",
 	"3912":"http://yaoi-sei.com/",
 	"3913":"http://chocolatescans.blogspot.com/",
@@ -2551,7 +2675,7 @@ var group = {
 	"4262":"http://ohmyenel.blogspot.com/",
 	"4263":"http://multitudes.livejournal.com/",
 	"4264":"http://mogumogubakubaku.wordpress.com/",
-	"4266":"http://antisensescans.blogspot.com/",
+	"4266":"http://www.antisensescans.com/",
 	"4267":"http://blackentitytranslations.blogspot.com/",
 	"4269":"http://takai-tenshi-scanlations.blogspot.com/",
 	"4272":"http://koidanoscans.blogspot.com/",
@@ -2582,6 +2706,7 @@ var group = {
 	"4313":"http://vortex-scans.com/blog/",
 	"4314":"http://blue-eyesgirl.livejournal.com/",
 	"4315":"http://daitai.tumblr.com",
+	"4316":"http://abyss.dark-matrix.net",
 	"4317":"http://shinytranslations.wordpress.com/",
 	"4318":"http://hakurei-scans.blogspot.com/",
 	"4319":"https://sites.google.com/site/tbsscan/",
@@ -2652,14 +2777,14 @@ var group = {
 	"4413":"http://psychosodascans.livejournal.com/",
 	"4414":"http://hingablabla.wordpress.com/",
 	"4415":"http://brainscans.wordpress.com/",
-	"4416":"http://manprudbloempje.tumblr.com",
+	"4416":"http://manginaflower.tumblr.com/",
 	"4418":"http://starwulfen.livejournal.com/tag/scanlation",
 	"4419":"http://imperialscans.com/",
 	"4420":"http://ff-scanlations.livejournal.com/",
 	"4423":"http://asiangirlsonmopeds.wordpress.com/",
 	"4426":"http://solo-sc.livejournal.com/",
 	"4427":"http://arc-manga.blogspot.com/",
-	"4428":"http://pinoymanga.raikwun.com/",
+	"4428":"http://newpinoymanga.blogspot.com/",
 	"4429":"http://afthscans.funeralofsmiles.com/",
 	"4430":"http://0oyamaki0o.livejournal.com/",
 	"4432":"http://lolipedoninjas.blogspot.com/",
@@ -2701,7 +2826,7 @@ var group = {
 	"4482":"http://rp-fans.livejournal.com",
 	"4483":"http://withinsilence.ucoz.com/",
 	"4486":"http://lelei.org",
-	"4488":"http://TempusEdaxRerumTL.wordpress.com",
+	"4488":"http://tempusedaxrerumtl.com/",
 	"4489":"http://urashichiken.tumblr.com/",
 	"4490":"http://tsukiyadori.wordpress.com/",
 	"4492":"http://midnightcrewsubs.blogspot.com/",
@@ -2741,7 +2866,7 @@ var group = {
 	"4550":"http://atxalchemy.wordpress.com/",
 	"4551":"http://seiscans.blogspot.com/",
 	"4552":"http://ichimarshmallow.wordpress.com/",
-	"4554":"http://nanachanscans.wordpress.com/",
+	"4554":"http://terrabane.wordpress.com/",
 	"4555":"http://magalingscans.wordpress.com",
 	"4556":"http://asmodeatranslations.blogspot.com/",
 	"4557":"http://bara-blogger.blogspot.com/",
@@ -2783,14 +2908,14 @@ var group = {
 	"4616":"http://www.mediafire.com/?6luzylx6l3yd0",
 	"4617":"http://nornir.fleeting-whisper.net/reader/",
 	"4619":"http://dotrscans.wordpress.com/",
-	"4620":"http://wonderland.schala.net/",
+	"4620":"http://wonderlandtranslations.net/",
 	"4621":"http://troikatrans.wordpress.com/",
 	"4622":"http://meisakuworks.wordpress.com/",
 	"4623":"http://sw.littlewhitebutterflies.net/",
 	"4625":"http://suiseiscans.wordpress.com/",
 	"4627":"http://urabokuscanlations.wordpress.com/",
 	"4628":"http://eliology.com/",
-	"4629":"http://roseliascans.blogspot.com/",
+	"4629":"http://www.roseliascans.com/",
 	"4630":"http://ubazo.com/",
 	"4631":"http://hanra.hannugi.com",
 	"4632":"http://livingdolls.bookmunchies.com/",
@@ -2823,7 +2948,7 @@ var group = {
 	"4675":"http://planethima.wordpress.com/",
 	"4677":"http://yukina.weebly.com/",
 	"4678":"http://darkorderscan.com/",
-	"4681":"http://transientmirage.com/",
+	"4681":"http://transientmirage.blogspot.com/",
 	"4683":"http://razuriscans.livejournal.com/",
 	"4688":"http://www.yukipo.com/",
 	"4689":"http://imoutoliciouslnt.blogspot.com/",
@@ -2839,9 +2964,9 @@ var group = {
 	"4707":"http://kuro-scans.livejournal.com/",
 	"4709":"http://soritt.livejournal.com/",
 	"4710":"http://aeida.tumblr.com/",
-	"4711":"http://pknoctis.blogspot.com/",
+	"4711":"http://pknoctis.tumblr.com/",
 	"4712":"http://wolfyscans.blogspot.com/",
-	"4714":"http://mysticiris.info/",
+	"4714":"https://mysticirisscans.wordpress.com/",
 	"4715":"http://ckmscans.halofight.com/",
 	"4716":"http://yukis0ra.livejournal.com/",
 	"4719":"http://infinityscanlation.wix.com/the-is",
@@ -2871,20 +2996,21 @@ var group = {
 	"4757":"http://aoibarascans.webs.com",
 	"4758":"http://emeraudemanga.blogspot.it/",
 	"4763":"http://www.mangacanyon.com",
-	"4764":"http://renzokuseiscans.blogspot.ca/",
+	"4764":"http://renzokuseiscans.blogspot.com/",
 	"4765":"http://houseofgfx.com",
 	"4766":"http://farhadfriends.wordpress.com/",
 	"4767":"http://lemonpielovers.webs.com/",
 	"4768":"http://quickiescans.wordpress.com/",
-	"4769":"http://ddsol.site40.net/",
+	"4769":"https://www.facebook.com/CWT762",
 	"4770":"http://fujoshigeneration.com/",
 	"4771":"http://sy-scanlations.livejournal.com/",
 	"4772":"http://ilovesensei.wordpress.com/",
 	"4775":"http://sha-scans.blogspot.com/",
-	"4776":"http://robofaget.tumblr.com/",
+	"4776":"http://duratrans.tumblr.com/",
 	"4777":"http://adarshan-novels.livejournal.com/",
 	"4778":"http://raynsandlele.wordpress.com/",
 	"4779":"http://rabbitteam.livejournal.com/",
+	"4780":"http://seizonscans.actionprinny.com/",
 	"4782":"http://www.bondbirthmarks.info/",
 	"4784":"http://pechanko.wordpress.com/",
 	"4786":"http://boonscanlations.blogspot.de/",
@@ -2899,7 +3025,7 @@ var group = {
 	"4798":"http://blueflamescanlation.webs.com/",
 	"4799":"http://pinkfatale.net/",
 	"4801":"http://canonrap.wordpress.com/",
-	"4802":"http://www.kuudere.com",
+	"4802":"http://kuudere2.wordpress.com/",
 	"4803":"http://chiyako92.wordpress.com/",
 	"4805":"http://www.mediafire.com/?ephhbm93pg78s",
 	"4806":"http://cocobees.livejournal.com/",
@@ -2931,7 +3057,7 @@ var group = {
 	"4848":"http://theapplefish.weebly.com/",
 	"4849":"http://auwx.livejournal.com/",
 	"4850":"http://www.surasplace.com/",
-	"4852":"http://deadfrog.us/profile.html?name=caterpillar",
+	"4852":"https://deadfrog.me/profile.html?name=caterpillar",
 	"4854":"http://lesbaignoires.wordpress.com",
 	"4855":"http://lolcopypaste.livejournal.com",
 	"4856":"http://iemonsy.webs.com/",
@@ -2980,7 +3106,7 @@ var group = {
 	"4922":"http://psscans.info/",
 	"4923":"http://gnsntdo.blogspot.com.ar/",
 	"4925":"http://mairietoile.wordpress.com/",
-	"4926":"http://shoujosense.wordpress.com/",
+	"4926":"http://shoujosense.com/",
 	"4927":"http://tehspiah.wordpress.com/",
 	"4928":"http://lupajenge.livejournal.com/",
 	"4932":"http://10tscans.webs.com",
@@ -3037,7 +3163,7 @@ var group = {
 	"5005":"http://www.sleepyscans.blogspot.com",
 	"5006":"http://j.mp/projectbody",
 	"5007":"http://schierkescans.livejournal.com/",
-	"5008":"http://seinenscans.blogspot.co.uk",
+	"5008":"http://seinenxscansxprojects.blogspot.com/",
 	"5010":"http://scorpion1d3x.livejournal.com/",
 	"5011":"http://meo23.livejournal.com/",
 	"5012":"http://shiro-shoujo.livejournal.com/",
@@ -3048,9 +3174,10 @@ var group = {
 	"5017":"http://seinennara.blogspot.com",
 	"5018":"http://loequality.blogspot.ca/",
 	"5021":"http://ak-scans.wikia.com/wiki/The_/ak/_Wiki",
+	"5022":"http://www.suzuran-high.com/forum/index.php",
 	"5023":"http://oresamascans.wordpress.com",
 	"5026":"http://buttonscity.blogspot.com",
-	"5027":"http://bentoland.wordpress.com/",
+	"5027":"http://bento-scans.mokkori.fr/",
 	"5029":"http://devil-castle.livejournal.com/",
 	"5033":"http://dear-marionette.livejournal.com/",
 	"5034":"http://darkmurmur.com/",
@@ -3063,7 +3190,7 @@ var group = {
 	"5042":"http://dropmanga.webs.com/",
 	"5043":"http://rovscans.wordpress.com/",
 	"5044":"http://ginironochou.wordpress.com/",
-	"5045":"http://xcxscans.wordpress.com/",
+	"5045":"http://xcxscans.blogspot.com/",
 	"5046":"http://kuro-hachi.tumblr.com/",
 	"5047":"http://cswordreleases.blogspot.com",
 	"5048":"http://springephemeral.wordpress.com/",
@@ -3078,7 +3205,7 @@ var group = {
 	"5061":"http://serendipitymanga.blogspot.ro/",
 	"5065":"http://asdfscans.mokkori.fr/",
 	"5066":"http://mangashouten.wordpress.com/",
-	"5067":"http://akito-h.minus.com/mFcnjzZlb",
+	"5067":"https://www.mediafire.com/folder/xz3uihajr2qq9/Scanlations",
 	"5070":"http://www.twistedhelscans.com/",
 	"5071":"http://yankeeshigh.webs.com/",
 	"5074":"http://limerencescans.webs.com",
@@ -3093,7 +3220,7 @@ var group = {
 	"5086":"http://paradiselovescanlations.wordpress.com/",
 	"5087":"http://asiaisaru.livejournal.com/",
 	"5088":"http://rockinghorsescans.blogspot.com/",
-	"5089":"http://destinyscanz.weebly.com/",
+	"5089":"http://seafoodbuffetscans.wordpress.com/",
 	"5090":"http://www.pokemon-originals.org",
 	"5091":"http://imachscans.wordpress.com/",
 	"5092":"http://nitoryu-scans.blogspot.com/",
@@ -3123,7 +3250,7 @@ var group = {
 	"5128":"http://sennenkinoyumescans.webs.com",
 	"5130":"http://baradisescanlations.wordpress.com/",
 	"5131":"http://lewdgrenadier.blogspot.ca/",
-	"5133":"http://www.mediafire.com/hyakko",
+	"5133":"https://mega.co.nz/#F!21p2SRiB!BunRvzcx8PklVsMIadR1LA",
 	"5134":"http://cyborg009.livejournal.com/62469.html",
 	"5135":"http://hardcorepleasurefantasy.wordpress.com/",
 	"5136":"http://teatimescans.wordpress.com/",
@@ -3156,7 +3283,7 @@ var group = {
 	"5184":"http://sasscans.livejournal.com",
 	"5185":"http://mangacola.wordpress.com/",
 	"5187":"http://bartleyscans.blogspot.com",
-	"5188":"http://kyakkascans.blogspot.ca/",
+	"5188":"http://kyakka.wordpress.com/",
 	"5189":"http://illusionrabbit.wordpress.com",
 	"5190":"http://kowasu.tumblr.com/",
 	"5192":"http://www.kimotaku.com/",
@@ -3168,99 +3295,135 @@ var group = {
 	"5199":"http://hoshi-kuzuu.livejournal.com/",
 	"5200":"http://www.myblogyo.com",
 	"5201":"http://bhhfc.blogspot.com/",
-	"5204":"http://lagscans.webs.com/",
+	"5204":"http://lagscans.wordpress.com/",
 	"5205":"http://artemisproject.tumblr.com/",
 	"5206":"http://malscans.blogspot.com/",
 	"5207":"http://mtogroup.wordpress.com/",
 	"5210":"http://junnasscans.tumblr.com/",
-	"5212":"http://www.kira-fansub.com/",
+	"5212":"http://kira-manga.tumblr.com/",
 	"5215":"http://alscans.wordpress.com",
-	"5217":"http://mngacow.com/",
+	"5216":"http://bishounenlove.wordpress.com/",
+	"5217":"http://mangacow.co/",
 	"5223":"http://s2scanlations.com/",
 	"5226":"http://prozessh.blogspot.de/",
 	"5227":"http://bunny26a3.blogspot.com/",
 	"5228":"http://smdc-translations.com/",
 	"5230":"http://www.facebook.com/SkyOfSnowScanlation",
 	"5231":"http://yorojin.tumblr.com/",
-	"5239":"http://bakeneko-scans.livejournal.com/",
+	"5232":"http://wearelostnfound.blogspot.com/",
+	"5239":"http://bakenekoscanlation.shounen-ai.net/",
 	"5248":"http://hereticlnt.blogspot.com/",
+	"5251":"http://yuukimeganescans.tumblr.com/",
 	"5252":"http://kiririn.me/",
 	"5255":"https://rkeg.wordpress.com/",
+	"5257":"http://shincodezeroblog.wordpress.com/",
 	"5260":"http://yaoislife.tumblr.com/",
-	"5261":"http://underdogscan.blogspot.com/",
+	"5261":"http://underdogscans.wordpress.com/",
 	"5263":"http://mankitsuscans.wordpress.com/",
 	"5264":"http://wolfchildrenameandyuki.blogspot.com/",
 	"5271":"http://projects.dogtato.net/blog/",
 	"5276":"http://gurennoheyakara.blogspot.it/",
 	"5279":"http://tak3z0.livejournal.com/",
-	"5282":"http://megu-scans.blogspot.com/",
+	"5281":"http://luffynotomo.livejournal.com/",
+	"5282":"http://meguscans.wordpress.com/",
 	"5283":"http://zqscans2013.wordpress.com/",
 	"5285":"http://arainamiscans.wordpress.com/",
+	"5286":"http://pastebin.com/f2B6mpf3",
 	"5287":"http://junktheeater.wordpress.com/",
 	"5289":"http://turnipfarmers.wordpress.com/",
 	"5290":"http://xrosraws.wordpress.com/",
 	"5293":"http://chichan54.tumblr.com/",
 	"5296":"http://krizalidtranslations.wordpress.com/",
+	"5301":"https://ceiphiedknightandbanditsplight.wordpress.com/",
 	"5304":"http://nisepanlations.tumblr.com/",
+	"5308":"http://erscans.blogspot.de/",
 	"5309":"http://oppai-scans.tumblr.com/",
 	"5310":"http://shuuen-scans.tumblr.com/",
 	"5312":"http://detectiveconanscans.wordpress.com/",
+	"5313":"https://bearscans.wordpress.com/",
 	"5316":"http://pastebin.com/f78v5YkR",
+	"5317":"http://theriddleproject.tumblr.com/",
+	"5318":"http://nosafewordtranslations.blogspot.com/",
+	"5319":"https://teruteruxshounen.wordpress.com/",
+	"5321":"http://nightsky.ucoz.com/",
 	"5323":"http://randomscans.blogspot.com/",
-	"5324":"http://symphogear.blogspot.de/",
+	"5324":"http://symphogear.blogspot.com/",
+	"5325":"http://tsukareteru-tako.tumblr.com/",
 	"5326":"http://chikiscans.com/",
 	"5329":"http://tmnbe-scans.blogspot.com/",
+	"5330":"https://gottoscanlates.wordpress.com/",
 	"5332":"http://taste-and-eat.livejournal.com/",
+	"5335":"http://kappa-scans.blogspot.de/",
 	"5336":"http://arascans.blogspot.com/",
+	"5337":"http://fi-no-hyouteki.tumblr.com/",
 	"5339":"http://boyslovenetwork.blogspot.com/",
+	"5340":"https://dorankunekoscans.wordpress.com/",
+	"5342":"http://oofuri.livejournal.com/",
 	"5345":"http://aion-scanlations.blogspot.com/",
+	"5346":"http://makoto-tateno.livejournal.com/",
+	"5347":"http://sinbad-dream.livejournal.com/",
 	"5351":"http://boards.4chan.org/a/",
 	"5354":"http://redvodkatranslations.blogspot.com/",
-	"5357":"http://kagerouscans.tumblr.com/",
+	"5357":"https://kagerouscans.wordpress.com/",
 	"5358":"http://we_scans.livejournal.com/",
 	"5359":"http://peek-a-yaoi.tumblr.com/",
+	"5360":"https://hurpyhooves.wordpress.com/",
 	"5361":"http://fragmentedhollow.wordpress.com/",
+	"5362":"https://daikiscantrad.wordpress.com/",
 	"5364":"http://chocobananascans.tumblr.com",
 	"5370":"http://tiger-and-bunny.livejournal.com/",
 	"5371":"http://bl-gyaru.com/",
 	"5373":"http://summer-rain.info/",
 	"5374":"http://fuwasyndrome.livejournal.com/",
 	"5377":"http://leno-obscurum.livejournal.com/",
+	"5379":"http://anaheimscanlations.blogspot.com/",
+	"5380":"http://cesegura.tumblr.com/",
 	"5382":"http://aoi-hisui.tumblr.com/",
+	"5383":"http://yumekotan.tumblr.com/",
+	"5385":"http://neverend-fansubs.blogspot.com/",
 	"5386":"http://1008scans.wordpress.com/",
+	"5388":"http://hentai-kun-projects.blogspot.com/",
 	"5392":"http://affinityscans.blogspot.com/",
 	"5397":"http://binbouscan.blogspot.ca/",
 	"5399":"http://lagendiascans.wordpress.com/",
 	"5403":"http://bapscans.blogspot.com/",
 	"5408":"http://mnight-haven.livejournal.com/",
+	"5410":"http://sachy-a.livejournal.com/",
 	"5412":"http://madmanscanlation.blogspot.com",
-	"5413":"https://kuwabarascans.wordpress.com/",
+	"5413":"http://saltyhometown.blogspot.com/",
 	"5415":"http://squalo-scans.livejournal.com/",
 	"5417":"http://sarumi-project.livejournal.com/",
 	"5418":"http://dragonballremastered.wordpress.com",
-	"5419":"http://whitecloudscans.blogspot.ca/",
+	"5419":"http://whitecloudscans.blogspot.com/",
 	"5422":"http://sweetpuriinsuscans.tumblr.com/",
 	"5423":"http://decadentdescent.blogspot.com/",
 	"5424":"https://xsuzuranx.wordpress.com/",
+	"5425":"http://tyfragiledreams.livejournal.com/",
 	"5427":"http://kingyokusa-scans.tumblr.com/",
-	"5428":"http://kisu.kissmanga.com/",
+	"5428":"http://www.nekyou.net/",
+	"5432":"http://kurokagi.wordpress.com/",
 	"5433":"http://indulgencescans.wordpress.com/",
 	"5435":"http://arrow-scans.blogspot.com.au/",
+	"5436":"http://yefione.tumblr.com/",
 	"5437":"http://dbptp.ithasceasedto.be/",
+	"5439":"http://ttlycaptivated.livejournal.com/",
 	"5445":"http://neetouryu.blogspot.com/",
 	"5447":"http://horriblescans.wordpress.com",
+	"5448":"http://lmstranslation.blogspot.com/",
+	"5449":"http://slapslash.blogspot.com/",
 	"5450":"http://nubvola.livejournal.com/",
 	"5452":"http://rawdistro.net/",
+	"5455":"http://chirikalovesjill.tumblr.com/",
 	"5457":"http://www.silentsky-scans.net/",
-	"5459":"http://cielscans.wordpress.com/",
-	"5462":"http://kameden.blogspot.com/",
+	"5459":"http://www.cielscans.com/",
+	"5462":"http://kamedenscans.wordpress.com/",
 	"5463":"http://rinruritrans.x.fc2.com",
 	"5464":"http://mangaordersbros.co.nf/",
 	"5465":"http://mangaordersbros.co.nf/",
 	"5466":"http://chinkos.tumblr.com/",
 	"5467":"http://higasa.tumblr.com/",
 	"5468":"http://forums.soulscans.com/forum.php",
-	"5469":"http://newchie.blogspot.ca/",
+	"5469":"http://newchie.blogspot.com/",
 	"5470":"http://horobosu-scans.livejournal.com/",
 	"5471":"http://godmovement.wordpress.com/",
 	"5472":"http://200wpms.wordpress.com/",
@@ -3269,7 +3432,6 @@ var group = {
 	"5479":"http://impatientscan.blogspot.com/",
 	"5486":"http://fairylandera.wordpress.com/",
 	"5488":"http://closetspaces.blogspot.com/",
-	"549":"http://www.nagare-boshi.net/",
 	"5492":"http://mayonnaize.tumblr.com/",
 	"5493":"http://love-manhwa.blogspot.com/",
 	"5495":"http://mangalism.blogspot.com/",
@@ -3286,6 +3448,7 @@ var group = {
 	"5510":"http://beatyatoitscans.x10.mx/",
 	"5512":"http://undertheblossomingcherrytrees.blogspot.it/",
 	"5513":"http://thoughts-dreams-of-teens.blogspot.com/",
+	"5514":"http://e-hentai.org/",
 	"5515":"http://nekojiruproject.blogspot.com/",
 	"5516":"http://japhetic.tumblr.com/",
 	"5519":"http://jollygoat.tumblr.com/",
@@ -3300,9 +3463,9 @@ var group = {
 	"5535":"http://flying-pages.livejournal.com/",
 	"5538":"http://dourkout.blogspot.com/",
 	"5539":"http://frostscans.wordpress.com/",
-	"5540":"http://www.seaofnumbers.com/index.php",
+	"5540":"http://www.seaofnumbers.com/index.php?board=36.0",
 	"5541":"http://hannahscanlations.blogspot.com/",
-	"5542":"http://substitutescans.wordpress.com/",
+	"5542":"http://substitutescans.com/",
 	"5543":"http://linea-di-cherria.tumblr.com/",
 	"5544":"http://ecchibaka.blogspot.com/",
 	"5545":"http://mangaattheendoftime.tumblr.com/",
@@ -3321,14 +3484,15 @@ var group = {
 	"5564":"http://underthescarletcherrytrees.blogspot.it/",
 	"5565":"http://dynasty-scans.com/scanlators/fly_by_yuri",
 	"5567":"http://lifecastscans.wordpress.com/",
-	"5568":"http://www.foro.twindragons-scans.com/",
+	"5568":"http://foro.twindragons-scans.com/",
 	"5569":"http://lupo-fantasma.livejournal.com/",
 	"5570":"http://laute.tumblr.com/",
 	"5572":"http://dekinai-scans.livejournal.com/",
 	"5573":"http://www.komanga.com",
 	"5576":"http://tsukilining.livejournal.com/",
 	"5577":"http://zubatattack.tumblr.com/",
-	"5578":"http://friedsquid.tk",
+	"5578":"http://friedsquid.weebly.com/",
+	"5580":"http://ubscans.wordpress.com/",
 	"5581":"http://hikaritoyamiscanlation.blogspot.com.au/",
 	"5582":"http://kamisamascans.wordpress.com",
 	"5583":"http://sakurahonyaku.wordpress.com/",
@@ -3337,12 +3501,13 @@ var group = {
 	"5588":"http://yurihou.se/",
 	"5590":"http://aotamago.blogspot.nl/",
 	"5592":"http://mangaordersbros.co.nf/",
+	"5596":"https://www.facebook.com/pages/Bug-Spray-Scans/578996842143291",
 	"5597":"http://amarante-scans.tk/",
 	"5598":"http://www.yaoiotaku.com",
 	"5599":"http://sometimesidotranslations.tumblr.com/",
 	"5600":"http://kadavra-scanlation.blogspot.com/",
 	"5603":"http://ichinkoscans.tumblr.com/",
-	"5606":"http://suzakutheknight.livejournal.com/",
+	"5606":"http://stk-scanlations.tumblr.com/",
 	"5611":"http://elision-scans.net",
 	"5612":"http://lycheescans.blogspot.ca",
 	"5613":"http://greenlighttranslations.tumblr.com/",
@@ -3351,28 +3516,32 @@ var group = {
 	"5617":"http://bltranslation.blogspot.com",
 	"5618":"http://tacticsacademy.blogspot.com/",
 	"5619":"http://fujoshibitchs.livejournal.com/",
-	"5620":"http://moustachescans.wordpress.com/",
+	"5620":"http://moustachescans.pw/",
 	"5622":"http://amatoempire.livejournal.com/",
+	"5623":"https://www.facebook.com/Watami.Scanlations",
 	"5627":"http://halfassscans.wordpress.com/",
 	"5630":"http://tanpenshuu.tumblr.com/",
+	"5632":"http://w11.zetaboards.com/Tekken_Chinmi/site/",
+	"5633":"http://differentclouds.livejournal.com/",
 	"5634":"http://aquarionscans.blogspot.com",
 	"5635":"http://ochinchinpartyscans.tumblr.com/",
 	"5636":"http://sheraroxx.blogspot.com",
 	"5637":"http://amscans.wordpress.com",
-	"5638":"http://www.moonflower-scans.tk",
-	"5640":"http://pocketloli.blogspot.com/",
+	"5638":"http://moonflower-scans.weebly.com/",
+	"5640":"http://www.pocketloli.com/",
 	"5641":"http://snowsan.wordpress.com",
+	"5642":"http://www.batoto.net/group/_/d/desuchan-scans-r3467",
 	"5644":"http://rottenscans.wordpress.com/",
-	"5647":"http://baka-dumb-aho-scans.tumblr.com/",
+	"5647":"http://bakadumbaho.tumblr.com/",
 	"5649":"http://aka2kuro.wordpress.com/",
-	"5652":"http://risinggodsoftheeastscans.tumblr.com/",
+	"5652":"http://gsscans.tumblr.com/",
 	"5655":"http://lolibrigadescans.com",
 	"5657":"http://koketsuniirazunbakojiwoezu.wordpress.com/",
 	"5658":"http://wneescanslations.blogspot.com/",
-	"5659":"http://cm-scans.tumblr.com/",
+	"5659":"http://cm-scans.shounen-ai.net/",
 	"5661":"http://powermanga.org/",
 	"5663":"http://karnoodle.tumblr.com",
-	"5664":"http://day0dream.blogspot.com/",
+	"5664":"http://bhscans.blogspot.com/",
 	"5665":"http://konoerogaki.tumblr.com",
 	"5666":"http://www.futatsunotsuki.blogspot.mx/",
 	"5667":"http://minus.us.to/",
@@ -3383,7 +3552,7 @@ var group = {
 	"5673":"https://sites.google.com/site/mk42dragonscanlations/",
 	"5674":"http://bokusekiset.tumblr.com",
 	"5677":"http://reapers-scans.blogspot.com/",
-	"5679":"http://www.teamspecialscans.com/",
+	"5679":"http://teamspecialscans.com/",
 	"5681":"http://zombiesatemymanga.blogspot.com",
 	"5682":"http://alice-michiyo.tumblr.com/",
 	"5683":"http://www.flatopia.org/",
@@ -3391,21 +3560,25 @@ var group = {
 	"5687":"http://cheonsatranslations.blogspot.com/",
 	"5689":"http://violetdreams9.blogspot.com.au",
 	"5691":"http://hsscans.tumblr.com/",
-	"5693":"http://soltarination.tumblr.com/",
+	"5693":"http://www.soltarination.org/",
 	"5694":"http://blackricescans.tumblr.com",
+	"5695":"http://heartythrills.thecrazy.me",
 	"5697":"http://desirecampbell.com/",
 	"5698":"http://mmattari.blogspot.com/",
 	"5699":"http://shiho-s-diamond.livejournal.com/",
 	"5700":"http://ganbarinofansub.blogspot.com/",
 	"5701":"http://tb-scans.tumblr.com/",
-	"5705":"http://forgotten--scans.weebly.com/",
+	"5705":"http://fos-scans.com/",
 	"5706":"http://vgperson.tumblr.com/",
 	"5707":"http://salnar.wordpress.com/",
 	"5708":"http://90percentzebra.wordpress.com/",
+	"5709":"http://project-torture.tumblr.com/",
 	"5710":"http://oyasumitranslations.wordpress.com",
+	"5713":"http://sunnyskies.dreamwidth.org/",
 	"5714":"http://backdoorscans.tumblr.com/",
 	"5715":"http://dreamlesswindow.wordpress.com/",
 	"5716":"http://almostneet.wordpress.com/",
+	"5719":"http://shinballscanlations.tumblr.com/",
 	"5720":"http://nimu-manga.com/",
 	"5721":"http://hatsukkoi.tumblr.com",
 	"5723":"http://rapemanscans.wordpress.com/",
@@ -3428,13 +3601,14 @@ var group = {
 	"5756":"http://2qscans.wordpress.com",
 	"5757":"https://asagichou.wordpress.com/",
 	"5758":"http://fabled-pepper.blogspot.com/",
-	"5759":"http://pastebin.com/u/skythewood",
+	"5759":"http://skythewood.blogspot.com/",
 	"5760":"http://nekona.wordpress.com/",
 	"5761":"http://yue-shirosaki.livejournal.com/",
 	"5763":"http://slightlysarcastic.weebly.com",
-	"5765":"http://kiekie895.wix.com/otomescans",
+	"5765":"http://otomescans.wordpress.com/",
 	"5771":"http://hyouka-rangers.tumblr.com",
 	"5776":"http://revolution.team.forumcommunity.net/",
+	"5777":"https://www.facebook.com/Midnightdawnscans",
 	"5781":"http://baggedmilkscans.tumblr.com/",
 	"5783":"http://hellstonenofansub.blogspot.mx/",
 	"5786":"http://tumblr.rkitsune.com/",
@@ -3449,12 +3623,12 @@ var group = {
 	"5805":"http://blyscanlations.tumblr.com/",
 	"5809":"http://jaescans.blogspot.com/",
 	"5811":"http://yander.es/",
-	"5812":"http://www.batoto.net/group/_/n/necron99-r3834",
+	"5812":"http://necron99scans.com",
 	"5813":"http://triplesevenscans.blogspot.com/",
 	"5814":"http://lunox.us",
 	"5815":"http://balikatanscans.uco.im/",
 	"5816":"http://www.batoto.net/group/_/a/anonymous-r3177",
-	"5817":"http://www.batoto.net/group/_/p/penguinsinthebasement-r3524",
+	"5817":"http://bato.to/group/_/p/penguinsinthebasement-r3524",
 	"5819":"http://www.batoto.net/group/_/t/team-pixie-dust-r2915",
 	"5822":"http://v16.mokkori.fr/",
 	"5823":"http://www.batoto.net/group/_/s/scan%E3%82%8A%E3%83%BCtions-r3857",
@@ -3467,13 +3641,14 @@ var group = {
 	"5832":"http://www.batoto.net/group/_/d/disdeeee-r3849",
 	"5837":"http://www.batoto.net/group/_/p/p-mistress-scans-r3755",
 	"5838":"http://inuboku-scans.tumblr.com/",
+	"5840":"http://www.batoto.net/group/_/t/temper-trans-r3455",
 	"5842":"http://mikagura-scans.tumblr.com/",
 	"5843":"http://norawgami.tumblr.com/",
 	"5844":"http://kakoimamirai.wordpress.com/",
 	"5845":"http://muninki.wordpress.com/",
 	"5846":"http://renna-translations.tumblr.com/",
 	"5849":"http://senpai-scans.blogspot.com.au/",
-	"5851":"http://galacticascans.wordpress.com/",
+	"5851":"http://galacticascans.com/",
 	"5852":"http://sleepingdragonslie.wordpress.com/",
 	"5854":"http://www.batoto.net/group/_/t/tg-scanlations-r3316",
 	"5855":"http://desperatescanners.weebly.com/",
@@ -3482,8 +3657,10 @@ var group = {
 	"5860":"https://isolarium.wordpress.com/",
 	"5861":"http://www.batoto.net/group/_/l/low-gear-r3925",
 	"5864":"http://megatentranslations.tumblr.com/",
+	"5865":"http://www.batoto.net/group/_/c/cerberus-chihuahua-r3724",
+	"5866":"http://spluuuuurt.tumblr.com/",
 	"5872":"http://kotatsuscans.tumblr.com/",
-	"5876":"https://www.mangabox.me/",
+	"5876":"https://www.mangabox.me/reader/en/",
 	"5877":"http://randomsnarfle.tumblr.com/",
 	"5880":"http://pepperanon.blogspot.com",
 	"5881":"http://imperfectscans.wordpress.com/",
@@ -3496,10 +3673,11 @@ var group = {
 	"5891":"http://aoc-translations.tumblr.com/",
 	"5892":"http://the-moonlighters.ml/",
 	"5895":"http://hametsunomegami.blogspot.com/",
+	"5896":"http://missdream.org/",
 	"5897":"http://namakubi.net/",
 	"5899":"http://www.batoto.net/group/_/a/assassin-scans-r2656",
 	"5901":"http://yukikazescans.wordpress.com/",
-	"5902":"http://guhehe.wordpress.com/",
+	"5902":"http://guhehe.net/",
 	"5903":"https://lolipopscans.wordpress.com/",
 	"5904":"http://blackinque.imgur.com/",
 	"5905":"http://royalhearts.net/",
@@ -3516,16 +3694,21 @@ var group = {
 	"5924":"http://c2team.wordpress.com/",
 	"5925":"http://onmyodoscans.co.nf/",
 	"5926":"http://thefaiienscans.weebly.com/",
-	"5928":"http://tsundereservice.blogspot.jp/",
+	"5928":"http://tsundereservice.blogspot.com/",
 	"5929":"http://endscans.wordpress.com/",
+	"5931":"http://divina126.livejournal.com/",
+	"5933":"http://lianruru.tumblr.com/",
 	"5934":"http://comic-walker.com/set_lang/en/",
+	"5935":"http://kakuzakiseira.wordpress.com/",
 	"5941":"http://mangaordersbros.eu/",
 	"5942":"http://trilobitescans.wordpress.com/",
 	"5943":"http://www.batoto.net/group/_/g/gangking-fansub-r3714",
 	"5945":"http://kimagurescansub.wordpress.com/",
 	"5946":"http://mekamekasubs.tumblr.com/",
 	"5948":"http://renna-translations.tumblr.com/",
+	"5949":"http://mangabandits.net/",
 	"5950":"http://yakudou.com/",
+	"5951":"http://watisdisidonteven.blogspot.com/",
 	"5952":"http://sweetmelodyscans.wordpress.com/",
 	"5954":"http://www.batoto.net/group/_/m/morkie-r4143",
 	"5957":"http://bhhscans.com/",
@@ -3535,134 +3718,242 @@ var group = {
 	"5961":"http://dutschinat0r-scanlations.blogspot.com/",
 	"5962":"http://www.batoto.net/group/_/g/guest-21-r4157",
 	"5963":"http://blog.livedoor.jp/burninglovescans",
-	"5964":"http://sadtranslations.blogspot.co.uk/",
+	"5964":"http://sadtranslations.blogspot.com/",
 	"5965":"http://www.batoto.net/group/_/l/leo-r4075",
 	"5966":"http://kobatochandaisuki.wordpress.com/",
 	"5971":"http://springtimescans.weebly.com/",
 	"5972":"http://arcanascans.blogspot.com/",
 	"5973":"http://www.oneora.net/",
 	"5974":"http://lastchapterof.mangamatters.com/blog/",
+	"5980":"http://ozphscans.blogspot.com/",
 	"5982":"http://zeus7ex.wordpress.com/",
 	"5983":"http://www.horizonscans.com/",
+	"5984":"http://indigoscanlations.co.vu/",
 	"5985":"http://www.batoto.net/group/_/b/burger-scans-r4236",
 	"5986":"http://armageddonscans.blogspot.com/",
 	"5987":"http://ochimusha.wordpress.com/",
 	"5988":"http://almond-cream.tumblr.com/",
 	"5991":"http://meridianscans.wordpress.com/",
+	"5992":"http://xfengyujiutian.tumblr.com/manhua",
 	"5994":"http://paitouch.imgur.com/",
+	"5995":"http://lily-ros3.livejournal.com/",
 	"5996":"http://iridtranslations.blogspot.com/",
 	"5998":"http://nanachanscans.wordpress.com/",
+	"6000":"http://luxiufer.livejournal.com/",
 	"6002":"http://the-end-manga.livejournal.com/",
 	"6004":"http://www.batoto.net/group/_/e/entente-r3838",
 	"6007":"http://www.batoto.net/group/_/a/ahfhvmvm-r4271",
 	"6008":"http://cafescans.tumblr.com/",
+	"6010":"http://ink-herpes.blogspot.com/",
 	"6011":"http://yuriinwonderland.wordpress.com/",
 	"6013":"http://visualnovel.deviantart.com/",
 	"6014":"http://finella.nemissa.info/",
 	"6015":"http://dh5alpha.blogspot.com/",
+	"6016":"http://sl-llian.livejournal.com/",
 	"6020":"http://hui3r.wordpress.com/",
+	"6021":"http://panisal.livejournal.com/",
 	"6022":"http://artificialdemons.boards.net/",
 	"6023":"http://ss-scans.blogspot.com/",
 	"6024":"http://www.batoto.net/group/_/r/rpapo-r4326",
 	"6026":"http://thecatscans.wordpress.com/",
 	"6027":"http://tinyurl.com/animango-scans",
-	"6028":"http://cicada-translation.tumblr.com/",
+	"6028":"http://cicada-scans.tumblr.com/",
 	"6031":"http://editorfag.wordpress.com/",
 	"6032":"http://rinshankaihouscans.wordpress.com/",
 	"6033":"http://thenonames512.wordpress.com/",
-	"6034":"http://tsukikagescans.blogspot.com.br/",
+	"6034":"http://tsukikagescans.blogspot.com/",
 	"6035":"http://shonanjunaigumi.weebly.com/",
 	"6036":"http://kirikowildlife.wordpress.com/",
 	"6037":"http://www.batoto.net/group/_/p/project-b-r4293",
+	"6039":"http://w0jt1.blogspot.com/",
 	"6040":"http://teamgomi.tumblr.com/",
 	"6041":"http://www.batoto.net/group/_/r/reine-scans-r4286",
-	"6042":"http://rolybearpress.blogspot.com/?zx=8fdb90cebc4a3390",
-	"6043":"https://www.facebook.com/ToAruMajutsuNoIndexAndRailgunFanPage",
+	"6042":"http://rolybearpress.blogspot.com/",
+	"6043":"http://www.batoto.net/group/_/t/to-aru-universe-r4202",
 	"6045":"http://divulge-scans.tumblr.com/",
 	"6047":"https://azurevoid.wordpress.com/",
+	"6049":"http://tateyamaa.tumblr.com/",
 	"6050":"http://nijiyoake.tumblr.com/",
-	"6052":"http://akagamins.tumblr.com/",
+	"6051":"http://mion-sakamaki.tumblr.com/",
+	"6052":"http://koutonori.tumblr.com/",
+	"6054":"http://itsdaletos.tumblr.com/",
 	"6055":"http://silentwolfie.deviantart.com/",
 	"6057":"http://mypacescans.wordpress.com/",
-	"6059":"http://hengao-scans.tk/",
-	"6062":"http://www.yudy-arzachel.blogspot.com/",
-	"6064":"http://zettaitranslation.blogspot.mx/",
-	"6066":"http://fixitinposttat.blogspot.ca/",
+	"6059":"http://www.hengao.tk/",
+	"6062":"http://yudy-arzachel.blogspot.com/",
+	"6064":"http://zettaitranslation.blogspot.com/",
+	"6066":"http://fixitinposttat.wordpress.com/",
 	"6067":"http://soldier-hero.tumblr.com/",
 	"6068":"http://lonemanga.com/",
 	"6069":"http://www.lenovels.net/saintscans/",
-	"6072":"https://www.facebook.com/SacredBladeEnglish",
+	"6072":"http://sacredbladeenglish.wordpress.com/",
 	"6074":"http://kawascans.wordpress.com/",
-	"6076":"http://m.webtoons.com",
+	"6075":"http://fuku-shuu.tumblr.com/",
+	"6076":"http://www.webtoons.com/",
 	"6080":"http://great-blaster.tumblr.com/",
+	"6082":"http://pyralisa.tumblr.com",
 	"6084":"http://www.world-three.org/",
 	"6085":"http://ostnt.wordpress.com/",
 	"6087":"http://solitarytranslation.wordpress.com/",
 	"6088":"http://comiplex.com/",
+	"6089":"http://pokenobuscanlations.tumblr.com/",
+	"6094":"http://bato.to/group/_/a/akairi-akairizumu-r4158",
+	"6095":"http://kintsugiscans.blogspot.com/",
+	"6096":"http://janeypeixes.tumblr.com/",
+	"6099":"http://key-and-cravat.tumblr.com/",
 	"6101":"http://www.batoto.net/group/_/m/mangacurse%E6%94%B9-r4488",
 	"6105":"http://gto14dis.blogspot.com/",
+	"6106":"http://sugarsprayscans.tumblr.com/",
 	"6107":"http://raspomme.tumblr.com/",
 	"6108":"http://animefangirl.com/",
+	"6112":"http://nfp.is/",
 	"6113":"http://balmunkfezarion.deviantart.com/",
-	"6117":"http://soukascans.blogspot.ca/",
+	"6116":"http://crownprincetranslations.tumblr.com/",
+	"6117":"http://www.reddit.com/r/Souka/",
 	"6119":"http://flamenco-scanlations.tumblr.com/",
-	"6120":"http://tokkimori.weebly.com/",
+	"6120":"http://tokkimori-scans.net/",
 	"6122":"http://nyahafuckingha.tumblr.com/",
+	"6123":"http://hq-scans.tumblr.com/",
 	"6124":"http://www.batoto.net/group/_/s/sunrise-scans-r4470",
+	"6125":"http://hikarusora.tumblr.com/",
+	"6127":"http://black7bleach.livejournal.com/",
 	"6129":"http://anarzeescan.wordpress.com/",
 	"6130":"http://magatamaphantom.site11.com/",
 	"6132":"http://breadingbad.tumblr.com/",
 	"6134":"http://onetimescans.com/",
-	"6135":"http://www.batoto.net/group/_/m/must-be-endless-scanlations-r4485",
+	"6135":"http://mustbeendless.tumblr.com",
 	"6139":"http://ojougakuenscans.tumblr.com/",
-	"6144":"http://www.batoto.net/group/_/i/irst-r4546",
+	"6144":"https://irstland.wordpress.com/",
 	"6146":"http://www.batoto.net/group/_/i/insomniacs-r4384",
-	"6150":"http://bleuchees.tumblr.com/",	
+	"6147":"https://twitter.com/batmanscans",
+	"6150":"http://bleuchees.tumblr.com/",
+	"6153":"http://lurondo.tumblr.com/",
+	"6154":"http://pinkstarbepinkasane.blogspot.com/",
 	"6156":"http://renaiscans.tumblr.com/",
+	"6157":"http://www.qwaser.tk/",
+	"6159":"http://azurillturtle.blogspot.com/",
 	"6160":"http://cannighoul.tumblr.com/",
 	"6161":"http://krytykal.org/",
+	"6163":"https://www.shotachan.net/translations/",
 	"6164":"http://paperdollsproject.rocks/",
 	"6166":"http://yakushitemitta.tumblr.com/",
 	"6167":"http://shiroscanlations.wordpress.com/",
 	"6169":"http://setsuna86blog.wordpress.com/",
-	"6170":"http://www.dontknowmescans.tumblr.com/",
+	"6170":"http://dontknowmescans.tumblr.com/",
 	"6173":"http://www.batoto.net/group/_/h/hazue-ishin-r3590",
-	"6174":"http://bato.to/group/_/s/stormlight-r4615",
+	"6174":"http://stormlight-scans.weebly.com/",
+	"6175":"http://sakurapoolscans.tumblr.com/",
+	"6178":"http://frecklegirl.dreamwidth.org/",
 	"6179":"https://docs.google.com/document/d/1ljoXDy-ti5N7ZYPbzDsj5kvYFl3lEWaJ1l3Lzv1cuuM/preview?pli=1",
 	"6181":"http://kubera-tn.weebly.com/blog",
 	"6186":"http://tensaitranslations.wordpress.com/",
+	"6187":"http://becscans.wordpress.com/",
 	"6189":"http://jscans.altervista.org/",
 	"6192":"http://www.webtoonsreader.com/",
-	"6196":"https://www.facebook.com/FallenAngelsMATG",
+	"6194":"http://argovia2012.wix.com/lastgame",
+	"6196":"http://famatg.wordpress.com/",
+	"6198":"https://twitter.com/TtCTranslations",
 	"6200":"http://bato.to/group/_/f/fire-nation-scans-r4704",
 	"6201":"https://bakahou.wordpress.com/",
+	"6203":"http://darksequence.wordpress.com/",
+	"6204":"http://strawberrytimescanlations.wordpress.com/",
 	"6205":"https://www.facebook.com/pages/Xpunkcion/198368606926100",
 	"6207":"http://big-money-rustlas.tumblr.com/",
+	"6208":"https://bluesilvertranslations.wordpress.com/",
+	"6209":"http://bato.to/group/_/h/horsey-the-puny-r4725",
 	"6210":"http://ouzoku-scans.tumblr.com",
 	"6212":"http://suika.moe/",
 	"6213":"http://bato.to/group/_/k/kaneki-scans-r4691",
+	"6214":"http://saki-scans.tumblr.com/",
+	"6215":"http://freescanlations.tumblr.com/",
+	"6216":"http://blog.draggle.org/",
+	"6217":"http://krytykal.org/",
+	"6219":"https://drive.google.com/folderview?id=0ByPeaKaqUsGFQVAxUEM2bUI0R0E",
+	"6220":"http://niconii.wordpress.com/",
+	"6222":"http://pandaheroxx.blogspot.com/",
+	"6223":"http://penumbrale.livejournal.com/",
 	"6228":"http://horriblesubs.info/category/scans/",
 	"6229":"http://yoraikun.wordpress.com/",
+	"6232":"http://www.detectiveconanworld.com",
 	"6234":"http://epithetic.wordpress.com/",
+	"6236":"http://blackswanscans.tumblr.com/",
 	"6238":"http://oofuri-baka.tumblr.com/",
+	"6239":"http://bato.to/group/_/i/illuminated-scans-r4174",
 	"6241":"http://silvereaglescans.blogspot.com/",
 	"6242":"http://lasolistia.com/haruparty/",
+	"6243":"http://aria-dc-al-fine.livejournal.com/",
+	"6244":"http://yaoidesirerevolution.blogspot.com/",
 	"6246":"http://iseetooclearscanlations.tumblr.com/",
+	"6247":"http://marisemiu.tumblr.com/",
 	"6250":"http://manga0205.wordpress.com/",
 	"6252":"http://spherescans.blogspot.com/",
+	"6253":"http://lovesick-udunno.tumblr.com/",
+	"6256":"http://divine-squids.livejournal.com/",
+	"6259":"http://dattedaisuki.tumblr.com/",
 	"6260":"http://www.oni-scans.blogspot.com/",
 	"6261":"http://tapastic.com/",
 	"6262":"http://akagamins.tumblr.com/",
+	"6263":"http://shinkirouscans.wordpress.com/",
+	"6265":"http://namasuki.tumblr.com/",
 	"6266":"http://aisheteru-scans.blogspot.com/",
 	"6267":"http://bato.to/group/_/b/betterthannothing-r4802",
+	"6268":"http://theplotthief.tumblr.com/",
+	"6269":"http://radionoisescans.blogspot.com/",
+	"6270":"http://dimethylbenzene.tumblr.com/",
 	"6272":"http://nijimurashuuzo.tumblr.com/",
+	"6274":"http://shincodezeroblog.wordpress.com/",
+	"6275":"http://www.reddit.com/r/bravefrontier/",
 	"6279":"http://ask-mirajane-strauss.tumblr.com/",
 	"6280":"http://bato.to/group/_/h/hot-pink-r4837",
+	"6282":"https://binhjamin.wordpress.com/",
 	"6283":"http://silver-garden.eigenreality.net/",
 	"6284":"http://wingfril.livejournal.com/",
+	"6285":"http://yaoi-blcd.tumblr.com/",
 	"6286":"http://summertimescans.tumblr.com/",
 	"6287":"http://009godswar.dreamwidth.org/",
-	"6288":"http://jawztranslations.blogspot.com/"
+	"6288":"http://jawztranslations.blogspot.com/",
+	"6290":"http://valandra.tumblr.com/",
+	"6291":"https://yourewelcomescans.wordpress.com/",
+	"6292":"http://www.firststepsscans.tumblr.com/",
+	"6293":"https://sites.google.com/site/sekaigameoredake/",
+	"6294":"http://bato.to/group/_/b/biamam-scans-r4871",
+	"6295":"http://bato.to/group/_/n/nihilsciens-r4879",
+	"6296":"http://ohanashimi.wordpress.com/",
+	"6297":"https://hatoken.wordpress.com/",
+	"6298":"http://last-heaven-fansub.com/",
+	"6300":"http://himetranslations.tumblr.com/",
+	"6301":"http://luciarosescans.blogspot.com/",
+	"6303":"http://pirateyoshi.wordpress.com/",
+	"6305":"http://bato.to/group/_/p/peach-scanlations-r4897",
+	"6306":"http://gkamateurs.tumblr.com/",
+	"6307":"http://bato.to/group/_/j/jeff-r3023",
+	"6308":"http://gospel.みんな/",
+	"6310":"http://neeyuki.tumblr.com/",
+	"6312":"http://bato.to/group/_/o/operation-gst%C3%B6rte-esel-r4927",
+	"6313":"http://memory-lane-scans.blogspot.com/",
+	"6315":"http://jayminator.blogspot.com/",
+	"6316":"http://melllllly.tumblr.com/",
+	"6319":"http://mangacosmoenglish.blogspot.com/",
+	"6321":"http://www.dis-use.tumblr.com/",
+	"6322":"https://birdycephonaltera.wordpress.com/",
+	"6323":"https://defiring.wordpress.com/",
+	"6324":"http://wartdf.wordpress.com/",
+	"6325":"http://tsuigeki.wordpress.com/",
+	"6326":"http://yaoitoshokan.com/english-projects",
+	"6327":"http://levelupsubs.blogspot.de/",
+	"6328":"http://www.wuxiaworld.com/",
+	"6331":"http://variationa.tumblr.com/",
+	"6332":"http://www.mediafire.com/hidamarimanga",
+	"6334":"https://happymerchants.wordpress.com/",
+	"6337":"http://spaminsubs.wordpress.com/",
+	"6338":"http://mangadolls.wordpress.com/",
+	"6339":"https://eihscans.wordpress.com/",
+	"6341":"http://kurotsuki-novel.blogspot.com/",
+	"6344":"http://bato.to/group/_/t/team-bbp-r4569",
+	"6345":"http://drakengard-3.com/",
+	"6346":"http://yetiscanlations.wordpress.com/",
+	"6348":"http://bato.to/group/_/m/mms-mechanical-scans-r4972",
+	"6350":"https://hellotranslations.wordpress.com/"
 };
 
 var ircGroup = {
@@ -4019,7 +4310,7 @@ var ircGroup = {
 	"812":"irc.irchighway.net/Isane",
 	"878":"irc.irchighway.net/Intercross",
 	"827":"irc.irchighway.net/ymat",
-	"832":"irc.rizon.net/erob?eat",
+	"832":"irc.rizon.net/erobeat",
 	"946":"irc.rizon.net/Haruhi-fansubs",
 	"851":"irc.rizon.net/a2000a",
 	"877":"irc.irchighway.net/mangarealm",
@@ -4480,6 +4771,7 @@ var ircGroup = {
 	"5447":"irc.irchighway.net/horrible-scans",
 	"5452":"irc.irchighway.net/irc-distro",
 	"5457":"irchighway.net/silentsky",
+	"5459":"irc.rizon.net/cielscans",
 	"5538":"irc.irchighway.net/dourkout",
 	"5539":"irc.irchighway.net/frost",
 	"5540":"irc.irchighway.net/C-sidescanlations",
@@ -4513,6 +4805,7 @@ var ircGroup = {
 	"6026":"irc.irchighway.net/catscans",
 	"6117":"irc.irchighway.net/souka",
 	"6130":"irc.irchighway.net/Magatama",
+	"6134":"irc.irchighway.net/onetime",
 	"6161":"irc.rizon.net/AntiMagic Academy",
 	"6163":"irc.shotachan.net/shota",
 	"6170":"irc.irchighway.net/DontKnowMeScans",
@@ -4524,120 +4817,3 @@ var ircGroup = {
 	"6275":"irc.mibbit.net/bravefrontier",
 	"6283":"irc.rizon.net/silvergarden"
 };
-
-highlight();
-
-/* fetching external databases */
-var ext = document.createElement('script');
-ext.type = "text/javascript";
-ext.src = "https://github.com/pokil/BakaGroupsFix/raw/master/db.js";
-document.getElementsByTagName('head')[0].appendChild(ext);
-window.onload = function(){
-	if (typeof tempGroup !== "undefined"){
-		for (gid in tempGroup) {
-			group[gid]=tempGroup[gid];
-		}
-		for (gid in tempIRC) {
-			ircGroup[gid]=tempIRC[gid];
-		}
-	}
-	insert();
-}
-
-/* highlight reading list */
-function highlight(){
-var pad = document.getElementsByClassName('pad'); 
-	var padLen = pad.length;
-	var color1 = '#CCFFFF';
-	var color2 = '#AAFFFF';
-	var color;
-	var prev = false;
-	for (var i = 0; i < padLen; i++){
-		var readImg = pad[i].getElementsByTagName('img');
-		var parent=pad[i].parentNode.children;
-		
-		for (var k = 0; k < parent.length; k++){
-			if(prev){
-				parent[k].style.border = 'solid #777777'; 
-				parent[k].style.borderWidth = '1px 0px 0px 0px';  
-			}
-			if (readImg.length > 0) {
-			
-				if(pad[i].bgColor === '#F0F3F7'){
-					color = color1;
-				} else {
-					color = color2;
-				}
-				if(readImg[0].src.indexOf('images/listicons/type0.gif') >= 0){
-					parent[k].style.backgroundColor = color; 
-					parent[k].style.border = 'solid #777777'; 
-					parent[k].style.borderWidth = '1px 0px 0px 0px';  
-				}
-			}
-		}
-		if (readImg.length > 0) {
-			if(readImg[0].src.indexOf('images/listicons/type0.gif') >= 0){
-				prev=true;
-			} else {
-				prev=false;
-			}
-		}else {
-			prev=false;
-		}
-	}
-}
-function insert() {
-	var groupSite = '';
-	if(group[groupID]){
-		groupSite = group[groupID];
-	}
-
-	if(document.URL.indexOf('www.mangaupdates.com/groups.html') >= 0){
-		var list = document.getElementsByClassName('text');
-		var listLen = list.length;
-		var irc = '';
-		var site = document.createElement('tr');
-		site.innerHTML = '<td class="text"><u>Site</u></td><td class="text"><a target="_blank" alt="" href="' + groupSite + '"><u>' + groupSite + '</u></a></td>';
-		for (var i = 0; i < listLen; i++){
-			if (list[i].innerHTML === '<u>IRC</u>') {
-				if((irc=list[i].nextSibling.innerHTML) !== '<i>No IRC</i>'){
-					var a = irc.replace(/^.+@/,'');
-					var b = irc.replace('#','').replace(/@.*/,'');
-					list[i].nextSibling.innerHTML = '<a href="irc://' + a + '/' + b + '"><u>' + a + '/' + b + '</u></a>';
-				}
-				if(groupSite !== ''){
-					list[i].parentNode.parentNode.insertBefore(site, list[i].parentNode.nextSibling);
-				}
-			}
-		}
-	} else {
-		var scanlators = document.querySelectorAll('[title="Group Info"]');// $('a[title="Group Info"]').get();
-		var scanLen = scanlators.length;
-		for (var i = 0; i < scanLen; i++){
-			var sid = scanlators[i].href.replace(/^.+id=/,'');
-			var website = group[sid];
-			var t = '';
-			var t2 = '';
-			if(group[sid]){
-				t = '<a href="' + website + '" title="' + website + '"><span style="color:blue">[site]</span></a>';
-			} else {
-				if(document.URL.indexOf('www.mangaupdates.com/series.html') >= 0){
-					var dt = document.getElementsByClassName('releasestitle');
-					var ti = dt[0].textContent.replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
-				} else {
-					var ti = scanlators[i].parentNode.previousSibling.previousSibling.previousSibling.previousSibling.textContent.replace('[Add]','').replace('&','').replace(/&/g,'').replace(/"/g,'').replace( /\*/g, '' ).trim();
-				}
-				var sc = scanlators[i].innerHTML.replace('<u>','').replace('</u>','').replace(/&/g,'').replace(/"/g,'').trim();
-				t = '<a href="https://www.google.com/search?q=' + sc + ' '+ ti + ' site:bato.to/group/"><span style="color:red">(b)</span></a> ' +
-					'<a href="https://www.google.com/search?q=' + sc + '"><span style="color:red">(s)</span></a> ' +
-					'<a href="https://www.google.com/search?q=' + sc +' ' + ti +'"><span style="color:red">(ts)</span></a>';
-			}
-			if(ircGroup[sid]){
-				t2 = '<a href="irc://' + ircGroup[sid] + '" title="' + ircGroup[sid] + '"><span style="color:purple">[irc]</span></a>';
-			}
-			scanlators[i].outerHTML += ' '+ t + ' ' + t2;  
-		}
-		
-		
-	}
-}
