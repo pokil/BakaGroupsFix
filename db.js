@@ -26,7 +26,17 @@ var tempGroup = {
 	"6390":"https://wakga.wordpress.com/",
 	"6394":"https://gravitytranslations.wordpress.com/",
 	"6395":"http://www.dustloop.com/forums/",
-	"6396":"https://www.mangaholics.net/"
+	"6396":"https://www.mangaholics.net/",
+	"6397":"http://www.archangel.gq/wordpress/",
+	"6398":"https://inferiorscans.blogspot.com/",
+	"6400":"https://3829worksonstuff.wordpress.com/",
+	"6402":"https://demonicscans.blogspot.com/",
+	"6405":"http://lovenalufan.tumblr.com/",
+	"6406":"https://nightraccoon.wordpress.com/",
+	"6407":"http://skdscanlations.blogspot.com/",
+	"6411":"http://kumapillow.tumblr.com/",
+	"6413":"https://tsaltranslation.wordpress.com/",
+	"6414":"http://bato.to/group/_/m/mach-20-scans-r5097"
 };
 
 var tempIRC = {
