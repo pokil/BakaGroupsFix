@@ -21,7 +21,7 @@ var tempGroup = {
 	"6380":"http://breadscans.tumblr.com/",
 	"6381":"http://nekojiruproject.blogspot.com/",
 	"6382":"http://wizscans.co.vu/",
-	"6387":"https://arkmachinetranslations.wordpress.com/",
+	"6387":"https://arkmachinetranslations.com/",
 	"6388":"https://mahoutsuki.wordpress.com/",
 	"6390":"https://wakga.wordpress.com/",
 	"6394":"https://gravitytranslations.wordpress.com/",
@@ -30,13 +30,22 @@ var tempGroup = {
 	"6397":"http://www.archangel.gq/wordpress/",
 	"6398":"https://inferiorscans.blogspot.com/",
 	"6400":"https://3829worksonstuff.wordpress.com/",
+	"6401":"http://michinoakio.blogspot.com/",
 	"6402":"https://demonicscans.blogspot.com/",
 	"6405":"http://lovenalufan.tumblr.com/",
 	"6406":"https://nightraccoon.wordpress.com/",
 	"6407":"http://skdscanlations.blogspot.com/",
+	"6409":"http://bato.to/group/_/n/nest-traducciones-r4597",
+	"6410":"http://avertranslation.blogspot.com/",
 	"6411":"http://kumapillow.tumblr.com/",
 	"6413":"https://tsaltranslation.wordpress.com/",
-	"6414":"http://bato.to/group/_/m/mach-20-scans-r5097"
+	"6414":"http://bato.to/group/_/m/mach-20-scans-r5097",
+	"6418":"http://thenakedsol.blogspot.com/",
+	"6421":"http://odetosebastiana.tumblr.com/",    
+	"6423":"https://silvermanga.wordpress.com/",
+	"6424":"https://icarustranslations.wordpress.com/", 
+	"6425":"http://three-musqueerteers.tumblr.com/",
+	"6427":"http://halisen.moy.su/"
 };
 
 var tempIRC = {
