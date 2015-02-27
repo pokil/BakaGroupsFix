@@ -47,7 +47,7 @@ var tempGroup = {
 	"6423":"https://silvermanga.wordpress.com/",
 	"6424":"https://icarustranslations.wordpress.com/", 
 	"6425":"http://three-musqueerteers.tumblr.com/",
-	"6427":"http://halisen.moy.su/"
+	"6427":"http://halisen.moy.su/",
 	"6429":"https://itranslateln.wordpress.com/",
 	"6431":"https://faeryscans.wordpress.com/",
 	"6435":"http://yukinascans.blogspot.com/",
