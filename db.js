@@ -26,7 +26,7 @@ var tempGroup = {
 	"6387":"https://arkmachinetranslations.com/",
 	"6388":"https://mahoutsuki.wordpress.com/",
 	"6390":"https://wakga.wordpress.com/",
-	"6394":"https://gravitytranslations.wordpress.com/",
+	"6394":"http://gravitytranslations.com/",
 	"6395":"http://www.dustloop.com/forums/",
 	"6396":"https://www.mangaholics.net/",
 	"6397":"http://www.archangel.gq/wordpress/",
@@ -45,7 +45,7 @@ var tempGroup = {
 	"6418":"http://thenakedsol.blogspot.com/",
 	"6421":"http://odetosebastiana.tumblr.com/",    
 	"6423":"https://silvermanga.wordpress.com/",
-	"6424":"https://icarustranslations.wordpress.com/", 
+	"6424":"http://icarustranslations.com/", 
 	"6425":"http://three-musqueerteers.tumblr.com/",
 	"6427":"http://halisen.moy.su/",
 	"6429":"https://itranslateln.wordpress.com/",
@@ -58,14 +58,22 @@ var tempGroup = {
 	"6442":"http://kcountdown.tumblr.com/",
 	"6443":"http://misarumi.tumblr.com/",
 	"6445":"http://smallworldscans.tumblr.com/",
+	"6446":"http://vargil.livejournal.com/",
 	"6447":"http://www.pegasusfarts.com/",
 	"6449":"http://bato.to/group/_/c/celery-r5144",
 	"6450":"http://a0132.blogspot.com/",
 	"6451":"http://dreamskye7.tumblr.com/",
 	"6453":"http://bato.to/group/_/glorious-scanlations-r5103",
 	"6455":"http://bato.to/group/_/c/capsusingshift-r5147",
+	"6459":"https://palmereapscans.wordpress.com/",
 	"6463":"http://otakunotsuki.wordpress.com/",
-	"6467":"http://www.readmanga.today/"
+	"6467":"http://www.readmanga.today/",
+	"6468":"https://yoyehets.wordpress.com/",
+	"6470":"https://shintranslations.wordpress.com/",
+	"6473":"http://worldofwatermelons.com/",
+	"6474":"https://kptranslations.wordpress.com/",
+	"6476":"http://www.cdscans.com.br/",
+	"6477":"https://xahkun.wordpress.com/"
 };
 
 var tempIRC = {
