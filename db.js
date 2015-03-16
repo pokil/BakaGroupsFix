@@ -1,5 +1,7 @@
 var tempGroup = {
 	"3283":"http://pearsehillock.blogspot.com/",
+	"3775":"http://tokyoespscans.wordpress.com/",
+	"4124":"https://lemonscans.wordpress.com/",
 	"5833":"http://holdmyfeels.tumblr.com",
 	"6118":"http://bato.to/group/_/s/smc-scans-r4402",
 	"6343":"https://www.facebook.com/ethankingdomscans",
@@ -45,7 +47,7 @@ var tempGroup = {
 	"6418":"http://thenakedsol.blogspot.com/",
 	"6421":"http://odetosebastiana.tumblr.com/",    
 	"6423":"https://silvermanga.wordpress.com/",
-	"6424":"http://icarustranslations.com/", 
+	"6424":"http://icarustranslations.net/",
 	"6425":"http://three-musqueerteers.tumblr.com/",
 	"6427":"http://halisen.moy.su/",
 	"6429":"https://itranslateln.wordpress.com/",
@@ -69,13 +71,21 @@ var tempGroup = {
 	"6463":"http://otakunotsuki.wordpress.com/",
 	"6467":"http://www.readmanga.today/",
 	"6468":"https://yoyehets.wordpress.com/",
+	"6469":"http://bato.to/group/_/t/twisted-fate27-r4980",
 	"6470":"https://shintranslations.wordpress.com/",
 	"6473":"http://worldofwatermelons.com/",
 	"6474":"https://kptranslations.wordpress.com/",
 	"6476":"http://www.cdscans.com.br/",
-	"6477":"https://xahkun.wordpress.com/"
+	"6477":"https://xahkun.wordpress.com/",
+	"6479":"http://andyprue.tumblr.com/",
+	"6482":"https://netblazer.wordpress.com/",
+	"6491":"http://xcrossj.blogspot.com/",
+	"6493":"http://bato.to/group/_/c/cirno9baka-r5189",
+	"6502":"https://trippingoverwn.wordpress.com/",
+	"6507":"http://bato.to/group/_/s/second-base-r5204"
 };
 
 var tempIRC = {
-	"6434":"irc.rizon.net/hayashi"
+	"6434":"irc.rizon.net/hayashi",
+	"6507":"irc.rizon.net/secondbase"
 };
