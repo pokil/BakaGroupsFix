@@ -1,5 +1,4 @@
 var tempGroup = {
-	"3283":"http://pearsehillock.blogspot.com/",
 	"3775":"http://tokyoespscans.wordpress.com/",
 	"4124":"https://lemonscans.wordpress.com/",
 	"5833":"http://holdmyfeels.tumblr.com",
@@ -52,6 +51,7 @@ var tempGroup = {
 	"6427":"http://halisen.moy.su/",
 	"6429":"https://itranslateln.wordpress.com/",
 	"6431":"https://faeryscans.wordpress.com/",
+	"6432":"https://bato.to/group/_/t/the-scanlation-army-an-army-of-one-r5114",
 	"6435":"http://yukinascans.blogspot.com/",
 	"6437":"http://basedanon.imgur.com/",
 	"6439":"http://bato.to/group/_/tragedian-scans-r5120",
@@ -81,8 +81,13 @@ var tempGroup = {
 	"6482":"https://netblazer.wordpress.com/",
 	"6491":"http://xcrossj.blogspot.com/",
 	"6493":"http://bato.to/group/_/c/cirno9baka-r5189",
+	"6495":"https://tototrans.wordpress.com/",
+	"6497":"http://mokkachi.tumblr.com/",
 	"6502":"https://trippingoverwn.wordpress.com/",
-	"6507":"http://bato.to/group/_/s/second-base-r5204"
+	"6507":"http://bato.to/group/_/s/second-base-r5204",
+	"6517":"https://unexpectedscans.wordpress.com/",
+	"6536":"https://voidtranslations.wordpress.com/",
+	"6542":"https://bato.to/group/_/c/cat-r5214","3283":"http://pearsehillock.blogspot.com/",
 };
 
 var tempIRC = {
