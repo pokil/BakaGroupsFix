@@ -848,7 +848,7 @@ var group = {
 	"1235":"http://naroyado.mistakesofyouth.com/",
 	"1237":"http://team.akai-inazuma.com/",
 	"1240":"http://tea.nyaatorrents.org",
-	"1242":"http://a"1an":ia.net/",
+	"1242":"http://aerandria.net/",
 	"1243":"http://community.livejournal.com/kkm_manga/",
 	"1252":"http://shinai.nyaatorrents.org/",
 	"1257":"http://wingsangel.abyssalchronicles.com/",
