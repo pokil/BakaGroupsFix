@@ -1,5 +1,8 @@
 var tempGroup = {
+	"6084":"http://m3ow.moe/",
+	"6087":"https://jntranslation.wordpress.com/",
 	"6622":"https://hajiko.wordpress.com/",
+	"6684":"http://pikatranslations.com/",
 	"6723":"http://bato.to/group/_/h/heavenly-scans-r5240",
 	"6771":"http://manga.aoitenshi.com/",
 	"6779":"http://ddprogress.tumblr.com/",
