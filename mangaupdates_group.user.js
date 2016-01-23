@@ -2,7 +2,7 @@
 // @name        Mangaupdates Groups Fix
 // @namespace   https://github.com/pokil/BakaGroupsFix
 // @include     /http.*://www.mangaupdates.com/(releases|groups|series).*/
-// @version     1.3.5
+// @version     1.3.6
 // @grant       none
 // @updateURL 	https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.meta.js
 // @downloadURL https://github.com/pokil/BakaGroupsFix/raw/master/mangaupdates_group.user.js
@@ -4451,6 +4451,7 @@ var group = {
 	"6992":"http://gundam-meowth.tumblr.com/",
 	"6994":"http://tekitouscans.tumblr.com/",
 	"6995":"https://isekailunatic.wordpress.com/",
+	"6996":"http://orz-scanslations.tumblr.com/",
 	"6997":"http://mofochika.tumblr.com/",
 	"6998":"https://kanascans.wordpress.com/",
 	"700":"http://www.compman44.com/",
@@ -4844,6 +4845,8 @@ var group = {
 	"7450":"http://maigomaple-syrup.tumblr.com/",
 	"7451":"http://fgilantranslations.com/",
 	"7452":"http://bato.to/group/_/other/4s-r6006",
+	"7454":"http://www.up-subs.net/",
+	"7457":"http://bato.to/group/_/revenant-contract-r6015",
 	"747":"http://www.angelfire.com/geek/tetrisnomiko/tetristranslationss.html",
 	"749":"http://withthewill.net",
 	"75":"http://orangetangerine.cjb.net",
